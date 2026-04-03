@@ -1,14 +1,12 @@
 // model
-import { materials } from "../models/SearchModel.js";
+import { mockData } from "../models/mockData.js";
+import { SearchModel } from "../models/SearchModel.js";
 
 // View
 import { MaterialListView } from "../views/MaterialListView.js"
 
 export class SearchController {
     constructor(rootSelector) {
-        this.materials = materials;
-        this.filteredMaterials = materials;
-        this.searchTerm = "";
 
         this.dom = {
             root: $(rootSelector),
@@ -17,13 +15,14 @@ export class SearchController {
             results: null
         };
 
-        this.materialListView = null;
+        this.model = new SearchModel(mockData);
+        this.view = null;
     }
 
     init() {
         this.renderLayout(); // erstellt html gerüst
         this.setupViews(); // erstellt die einzelnen views und componenten
-        this.render();
+        this.render(); // momentan nur für erstes rendering. später wenn filter angewendet werden soll das hier ausgebaut werden
         this.bindEvents();
     }
 
@@ -50,18 +49,18 @@ export class SearchController {
     }
 
     setupViews() {
-        this.materialListView = new MaterialListView(this.dom.results);
+        this.view = new MaterialListView(this.dom.results);
     }
 
     render() {
-        this.materialListView.render(this.filteredMaterials);
+        this.view.render(this.model.getCurrentData());
     }
 
     bindEvents() {
         // Submit event
         this.dom.form.on("submit", (e) => {
             e.preventDefault();
-            this.handleSearchInput(this.dom.input.val());
+            this.executeSearch(this.dom.input.val());
         });
 
         // Live Search for later
@@ -70,14 +69,15 @@ export class SearchController {
         });
     }
 
-
-    handleSearchInput(value) {
+    
+    executeSearch(searchTerm) {
         console.log("start search");
-        this.searchTerm = value.trim().toLowerCase();
-        this.filteredMaterials = this.filterMaterials(this.searchTerm);
-        this.materialListView.render(this.filteredMaterials);
+
+        const results = this.model.fetchMaterials(searchTerm);
+        this.view.render(results);
     }
 
+    /*
     filterMaterials(searchTerm) {
         if (!searchTerm) {
             return this.materials;
@@ -86,7 +86,7 @@ export class SearchController {
         return this.materials.filter(material =>
             material.name.toLowerCase().includes(searchTerm)
         );
-    }
+    }*/
 
 
 }
