@@ -6,7 +6,7 @@ import { SearchModel } from "../models/SearchModel.js";
 import { MaterialListView } from "../views/MaterialListView.js"
 
 export class SearchController {
-    constructor(rootSelector) {
+    /*constructor(rootSelector) {
 
         this.dom = {
             root: $(rootSelector),
@@ -17,6 +17,20 @@ export class SearchController {
 
         this.model = new SearchModel(mockData);
         this.view = null;
+    }*/
+
+    constructor($rootElement) {
+
+        this.dom = {
+            root: $rootElement,
+            form: null,
+            input: null,
+            results: null
+        };
+
+        this.model = new SearchModel(mockData);
+        this.view = null;
+
     }
 
     init() {

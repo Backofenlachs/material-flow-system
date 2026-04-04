@@ -20,6 +20,7 @@
 import { Header } from "./Header.js";
 import { Footer } from "./Footer.js";
 import { Sidebar } from "./Sidebar.js";
+import { SearchTool } from "../tools/SearchTool.js";
 import { ContentArea } from "./ContentArea.js";
 
 export class AppShell {
@@ -36,6 +37,8 @@ export class AppShell {
         this.sidebar = null;
         this.contentArea = null;
         this.footer = null;
+
+        this.searchTool = null;
     }
 
     init() {
@@ -58,7 +61,7 @@ export class AppShell {
 
         this.dom.root.html(html);
 
-        // Cache DOM elements
+         // Cache DOM elements
         this.dom.header = this.dom.root.find(".app-header");
         this.dom.sidebar = this.dom.root.find(".app-sidebar");
         this.dom.content = this.dom.root.find(".app-content");
@@ -70,14 +73,19 @@ export class AppShell {
     setupComponents() {
         this.header = new Header(this.dom.header);
         this.sidebar = new Sidebar(this.dom.sidebar);
-        this.contentArea = new ContentArea(this.dom.content);
+        //this.contentArea = new ContentArea(this.dom.content);
         this.footer = new Footer(this.dom.footer);
+
+        // mount SearchTool in contentarea
+        this.searchTool = new SearchTool(this.dom.content);
+        this.searchTool.init();
     }
 
     render() {
         this.header.render();
         this.sidebar.render();
-        this.contentArea.render();
+        // this.contentArea.render();
         this.footer.render();
+        this.searchTool.render();
     }
 }
