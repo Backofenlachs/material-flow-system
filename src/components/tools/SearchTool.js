@@ -1,6 +1,8 @@
 /**
  * SearchTool is an adapter between the AppShell and the mountingsystem
  */
+
+import { SearchController } from "../../controllers/SearchController.js";
 export class SearchTool {
     constructor($rootElement) {
         this.$root = $rootElement;

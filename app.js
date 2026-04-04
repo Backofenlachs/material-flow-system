@@ -1,13 +1,18 @@
 //import { SearchController } from "./src/controllers/SearchController.js";
+//import { RiskTool } from "./src/components/tools/RiskTool.js"; 
 
 import { AppShell } from "./src/components/layout/AppShell.js";
 
 $(document).ready(() => {
-    console.log("JQuery successfully loaded");
+    const $app = $("#app");
+    console.log("JQuery successfully loaded\n app element: ", $app);
     
-    const appShell = new AppShell("#app");
+    const appShell = new AppShell($app);
     appShell.init();
+
     
+    //const riskTool = new RiskTool($app);
+    //riskTool.init();
 
 });
 

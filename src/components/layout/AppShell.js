@@ -20,13 +20,16 @@
 import { Header } from "./Header.js";
 import { Footer } from "./Footer.js";
 import { Sidebar } from "./Sidebar.js";
-import { SearchTool } from "../tools/SearchTool.js";
 import { ContentArea } from "./ContentArea.js";
 
+// All components and Tools
+import { SearchTool } from "../tools/SearchTool.js";
+import { RiskTool } from "../tools/RiskTool.js";
+
 export class AppShell {
-    constructor(rootSelector) {
+    constructor($rootElement) {
         this.dom = {
-            root: $(rootSelector),
+            root: $rootElement,
             header: null,
             sidebar: null,
             content: null,
@@ -37,8 +40,10 @@ export class AppShell {
         this.sidebar = null;
         this.contentArea = null;
         this.footer = null;
-
+        
+        // tools
         this.searchTool = null;
+        this.riskTool = null;
     }
 
     init() {
@@ -77,8 +82,12 @@ export class AppShell {
         this.footer = new Footer(this.dom.footer);
 
         // mount SearchTool in contentarea
-        this.searchTool = new SearchTool(this.dom.content);
-        this.searchTool.init();
+        //this.searchTool = new SearchTool(this.dom.content);
+        //this.searchTool.init();
+
+        // mount RiskTool in contentarea
+        this.riskTool = new RiskTool(this.dom.content);
+        this.riskTool.init();
     }
 
     render() {
@@ -86,6 +95,6 @@ export class AppShell {
         this.sidebar.render();
         // this.contentArea.render();
         this.footer.render();
-        this.searchTool.render();
+        //this.searchTool.render();
     }
 }
