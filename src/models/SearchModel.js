@@ -3,17 +3,15 @@
  * 
  */
 export class SearchModel {
-  constructor(mockData = []) {
-    this.lastFetchedData = mockData;
-    // this.materials = mockData;
-    this.dataSource = mockData; // Backend simulation
 
-    console.log("createt SearchModel: Data = ", this.materials);
+  constructor(mockData = []) {
+    this.rawData = mockData; // Backend simulation || Bakcend / original daten
+    this.currentData = mockData; // aktuelle Daten die gefiltert ode sortiert werden
 
   }
 
   getCurrentData() {
-    return this.lastFetchedData;
+    return this.currentData;
   }
 
   /**
@@ -24,11 +22,11 @@ export class SearchModel {
     const normalizedTerm = searchTerm.trim().toLowerCase();
 
     if(!normalizedTerm) {
-      this.lastFetchedData = this.dataSource;
+      this.currentData = this.rawData;
       return this.getCurrentData();
     }
 
-    this.lastFetchedData = this.dataSource.filter((mat) => {
+    this.currentData = this.rawData.filter((mat) => {
       const name = mat.name?.toLowerCase() || "";
       const storage = mat.storage?.toLowerCase() || "";
       const stock = String(mat.stock ?? "");
@@ -45,37 +43,10 @@ export class SearchModel {
 
   // Mögliche Filter methoden
   filterCurrentData(predicateFn) {
-    return this.lastFetchedData.filter(predicateFn);
+    return this.currentData.filter(predicateFn);
   }
 
   sortCurrentData(compareFn) {
-    return [...this.lastFetchedData].sort(compareFn);
+    return [...this.currentData].sort(compareFn);
   }
-
-
-
-
-/*
-  search(searchTerm) {
-    const normalizedTerm = searchTerm.trim().toLowerCase();
-
-    if(!normalizedTerm) {
-      this.materials = this.mockData;
-      return ;
-    }
-
-    this.materials =  this.mockData.filter((mat) => {
-      const name = mat.name?.toLowerCase() || "";
-      const storage = mat.storage?.toLowerCase() || "";
-      const stock = String(mat.stock ?? "");
-
-      return (
-        name.includes(normalizedTerm) ||
-        storage.includes(normalizedTerm) ||
-        stock.includes(normalizedTerm)
-      );
-    });
-  }
-  */
-
 }
