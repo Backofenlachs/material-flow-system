@@ -17,14 +17,14 @@
 
  */
 
-import { Header } from "./Header.js";
-import { Footer } from "./Footer.js";
-import { Sidebar } from "./Sidebar.js";
-import { ContentArea } from "./ContentArea.js";
+import { Header } from "../components/layout/Header.js";
+import { Footer } from "../components/layout/Footer.js";
+import { Sidebar } from "../components/layout/Sidebar.js";
+import { ContentArea } from "../components/layout/ContentArea.js";
 
 // All components and Tools
-import { SearchTool } from "../tools/SearchTool.js";
-import { RiskTool } from "../tools/RiskTool.js";
+import { SearchTool } from "../components/tools/SearchTool.js";
+import { RiskTool } from "../components/tools/RiskTool.js";
 
 export class AppShell {
     constructor($rootElement) {
@@ -86,8 +86,8 @@ export class AppShell {
         //this.searchTool.init();
 
         // mount RiskTool in contentarea
-        this.riskTool = new RiskTool(this.dom.content);
-        this.riskTool.init();
+        //this.riskTool = new RiskTool(this.dom.content);
+        //this.riskTool.init();
     }
 
     render() {
@@ -96,5 +96,21 @@ export class AppShell {
         // this.contentArea.render();
         this.footer.render();
         //this.searchTool.render();
+    }
+
+    getHeaderSlot() {
+        return this.dom.header;
+    }
+
+    getSidebarSlot() {
+        return this.dom.sidebar;
+    }
+
+    getContentSlot() {
+        return this.dom.content;
+    }
+
+    getFooterSlot() {
+        return this.dom.footer;
     }
 }

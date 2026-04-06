@@ -104,4 +104,8 @@ export class RiskController {
             interestRate: Number(this.dom.input.interestRate.val())
         };
     }
+
+    render() {
+        throw new Error("render() Methode in RiskController muss implementiert werden.");
+    }
 }
