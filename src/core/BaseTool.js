@@ -1,7 +1,12 @@
 /**
  * Abstract base class for all tools
+ * 
+ * @class BaseTool
+ * @constructor  @param {jQuery} $rootElement - Root element where the tool will render its content
+ * @method init() - obligated - Method to initialize the tool (setup logic, controllers, events)
+ * @method render() - obligated - Method to render the tool's UI
+ * @method destroy() - Method to cleanup (events, DOM, references) when the tool is unmounted
  */
-
 export class BaseTool {
     constructor($rootElement) {
         if (new.target === BaseTool) {
@@ -34,5 +39,9 @@ export class BaseTool {
      */
     destroy() {
         // optional override
+
+        if (this.$root) {
+            this.$root.empty();
+        }
     }
 }

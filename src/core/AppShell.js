@@ -16,15 +16,12 @@
     </div>
 
  */
+7
+//import { Header } from "../components/layout/Header.js";
+//import { Footer } from "../components/layout/Footer.js";
+// import { Sidebar } from "../components/layout/Sidebar.js";
+// import { ContentArea } from "../components/layout/ContentArea.js";
 
-import { Header } from "../components/layout/Header.js";
-import { Footer } from "../components/layout/Footer.js";
-import { Sidebar } from "../components/layout/Sidebar.js";
-import { ContentArea } from "../components/layout/ContentArea.js";
-
-// All components and Tools
-import { SearchTool } from "../components/tools/SearchTool.js";
-import { RiskTool } from "../components/tools/RiskTool.js";
 
 export class AppShell {
     constructor($rootElement) {
@@ -76,25 +73,19 @@ export class AppShell {
     }
 
     setupComponents() {
-        this.header = new Header(this.dom.header);
-        this.sidebar = new Sidebar(this.dom.sidebar);
+        //this.header = new Header(this.dom.header);
+        //this.sidebar = new Sidebar(this.dom.sidebar);
         //this.contentArea = new ContentArea(this.dom.content);
-        this.footer = new Footer(this.dom.footer);
+        //this.footer = new Footer(this.dom.footer);
 
-        // mount SearchTool in contentarea
-        //this.searchTool = new SearchTool(this.dom.content);
-        //this.searchTool.init();
-
-        // mount RiskTool in contentarea
-        //this.riskTool = new RiskTool(this.dom.content);
-        //this.riskTool.init();
+        
     }
 
     render() {
-        this.header.render();
-        this.sidebar.render();
+        //this.header.render();
+        //this.sidebar.render();
         // this.contentArea.render();
-        this.footer.render();
+        //this.footer.render();
         //this.searchTool.render();
     }
 

@@ -1,8 +1,12 @@
-export class Sidebar {
+import { BaseTool } from "../../core/BaseTool.js";
+
+export class SidebarTool extends BaseTool {
     constructor($rootElement) {
-        this.dom = {
-            root: $rootElement,
-        };
+        super($rootElement);
+    }
+
+    init() {
+        // aktuell kein setup nötig, da Sidebar nur statischen Inhalt anzeigt
     }
 
     render() {
@@ -17,6 +21,7 @@ export class Sidebar {
             </nav>
         `);
 
-        this.dom.root.html($html);
+        this.$root.html($html);
     }
+
 }

@@ -23,6 +23,13 @@ export class AppManager {
         this.mountedTools = new Map();
     }
 
+    /**
+     * Regestriert ein Tool mit einem eindeutigen Namen(string) und der Tool-Klasse 
+     * Die Tool-Klasse muss von BaseTool erben und mindestens init() und render() implementieren
+     * 
+     * @param {string} toolName 
+     * @param {BaseTool} ToolClass 
+     */
     registerTool(toolName, ToolClass) {
         if (!toolName || !ToolClass) {
             throw new Error("registerTool benötigt toolName und ToolClass.");
@@ -35,6 +42,11 @@ export class AppManager {
         this.toolRegistry.set(toolName, ToolClass);
     }
 
+    /**
+     * 
+     * @param {string} toolName 
+     * @param {string} slotName soll noch geändert werden zu einem enum oder so
+     */
     mountTool(toolName, slotName) {
         const ToolClass = this.toolRegistry.get(toolName);
         const $slot = this.slots[slotName];
@@ -51,7 +63,7 @@ export class AppManager {
             this.unmountTool(slotName);
         }
 
-        const toolInstance = new ToolClass($slot);
+        const toolInstance = new ToolClass($slot); 
 
 
         if (typeof toolInstance.init === "function") {
