@@ -5,6 +5,9 @@
  * 1. AppShell mit Header, Sidebar, Content und Footer erstellen
  * 2. AppManager erstellen, der die Slots verwaltet und Tools mounten/unmounten kann
  */
+
+import { BaseTool } from "./BaseTool.js";
+
 export class AppManager {
     constructor(appShell) {
         this.appShell = appShell;
@@ -23,6 +26,10 @@ export class AppManager {
     registerTool(toolName, ToolClass) {
         if (!toolName || !ToolClass) {
             throw new Error("registerTool benötigt toolName und ToolClass.");
+        }
+
+        if ( !(ToolClass.prototype instanceof BaseTool) ) { // check if ToolClass extends BaseTool
+            throw new Error(`ToolClass für "${toolName}" muss von BaseTool erben.`);
         }
 
         this.toolRegistry.set(toolName, ToolClass);

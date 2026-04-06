@@ -21,10 +21,12 @@
  */
 
 import { RiskController } from "../../controllers/RiskController.js";
+import { BaseTool } from "../../core/BaseTool.js";
 
-export class RiskTool {
+export class RiskTool extends BaseTool {
     constructor($rootElement) {
-        this.$root = $rootElement;
+        super($rootElement);
+        
         this.riskController = null;
     }
 
