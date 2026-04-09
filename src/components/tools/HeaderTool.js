@@ -1,10 +1,11 @@
 import { BaseTool } from "../../core/BaseTool.js";
 
 export class HeaderTool extends BaseTool {
-    constructor($rootElement, title) {
+    constructor($rootElement, config={}) {
         super($rootElement);
+        this.title = "Material Flow System";
 
-        this.title = title || "Material Flow System";
+        //console.log(`HeaderTool: constructor: ${config.title} | title: ${this.title}`);
     }
 
     init() {

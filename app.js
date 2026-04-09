@@ -17,26 +17,20 @@ $(document).ready(() => {
 
     const appManager = new AppManager(appShell);
 
-    // Header
+    // register all tools
     appManager.registerTool("HeaderTool", HeaderTool);
-    appManager.mountTool("HeaderTool", "header");
-
-    // Sidebar
     appManager.registerTool("SidebarTool", SidebarTool);
-    appManager.mountTool("SidebarTool", "sidebar");
-
-    // Footer
     appManager.registerTool("FooterTool", FooterTool);
+    appManager.registerTool("SearchTool", SearchTool);
+    appManager.registerTool("RiskTool", RiskTool);
+
+
+    appManager.mountTool("HeaderTool", "header");
+    appManager.mountTool("SidebarTool", "sidebar", { appManager }); // pass appManager to SidebarTool for tool switching
     appManager.mountTool("FooterTool", "footer");
 
-    // SearchTool
-    appManager.registerTool("SearchTool", SearchTool);
+    // initiales content tool
     appManager.mountTool("SearchTool", "content");
-
-    // RiskTool
-    appManager.registerTool("RiskTool", RiskTool);
-    appManager.mountTool("RiskTool", "content");
-
     
     //const riskTool = new RiskTool($app);
     //riskTool.init();

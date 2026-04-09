@@ -45,9 +45,9 @@ export class AppManager {
     /**
      * 
      * @param {string} toolName 
-     * @param {string} slotName soll noch geändert werden zu einem enum oder so
+     * @param {string} slotName soll noch geändert werden zu einem enum 
      */
-    mountTool(toolName, slotName) {
+    mountTool(toolName, slotName, config=null) {
         const ToolClass = this.toolRegistry.get(toolName);
         const $slot = this.slots[slotName];
 
@@ -63,7 +63,7 @@ export class AppManager {
             this.unmountTool(slotName);
         }
 
-        const toolInstance = new ToolClass($slot); 
+        const toolInstance = new ToolClass($slot, config); 
 
 
         if (typeof toolInstance.init === "function") {
@@ -93,6 +93,11 @@ export class AppManager {
 
         this.slots[slotName].empty();
         this.mountedTools.delete(slotName);
+    }
+
+    switchTool(slotName, toolName, config={}) {
+        this.unmountTool(slotName);
+        this.mountTool(toolName, slotName, config);
     }
 
     getMountedTool(slotName) {
