@@ -72,23 +72,6 @@ export class AppShell {
         console.log("AppShell: Layout rendered and DOM elements cached \n Cached DOM elements: ", this.dom);
     }
 
-    setupComponents() {
-        //this.header = new Header(this.dom.header);
-        //this.sidebar = new Sidebar(this.dom.sidebar);
-        //this.contentArea = new ContentArea(this.dom.content);
-        //this.footer = new Footer(this.dom.footer);
-
-        
-    }
-
-    render() {
-        //this.header.render();
-        //this.sidebar.render();
-        // this.contentArea.render();
-        //this.footer.render();
-        //this.searchTool.render();
-    }
-
     getHeaderSlot() {
         return this.dom.header;
     }
