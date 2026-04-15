@@ -16,75 +16,92 @@
     </div>
 
  */
-7
-//import { Header } from "../components/layout/Header.js";
-//import { Footer } from "../components/layout/Footer.js";
-// import { Sidebar } from "../components/layout/Sidebar.js";
-// import { ContentArea } from "../components/layout/ContentArea.js";
-
 
 export class AppShell {
     constructor($rootElement) {
         this.dom = {
             root: $rootElement,
-            header: null,
-            sidebar: null,
-            content: null,
-            footer: null
-        }
+            slots: {}
+        };
+    }
 
-        this.header = null;
-        this.sidebar = null;
-        this.contentArea = null;
-        this.footer = null;
+    init(layoutConfig) {
+        const html = this.renderNode(layoutConfig);
+        this.dom.root.html(html);
+        //this.renderLayout();
+        this.cacheSlots();
+    }
+
+
+    /**
+     * DIese funktion ist reingehackt sollte schöner übersichtlicher geschreiben werden
+     * nicht funktion ruft sich selbst auf.
+     */
+    renderNode(nodeConfig) {
+        const {
+            tag = "div",
+            slot = null,
+            id = "",
+            classes = [],
+            children = []
+        } = nodeConfig;
+
+        const classAttr = classes.length ? `class="${classes.join(" ")}"` : "";
+        const idAttr = id ? `id="${id}"` : null;
+        const slotAttr = slot ? `data-slot="${slot}"` : "";
         
-        // tools
-        this.searchTool = null;
-        this.riskTool = null;
+        const childrenHtml = children.map(child => this.renderNode(child)).join("");
+
+        return `
+            <${tag} ${idAttr} ${classAttr} ${slotAttr}>
+                ${childrenHtml}
+            </${tag}>
+        `;
     }
 
-    init() {
-        this.renderLayout();
-        this.setupComponents();
-        this.render();
-    }
-
-    renderLayout() {
+    renderLayout() { // old function uses generateSlots
         const html = `
             <div class="app-shell">
-                <header class="app-header wireframe"></header>
+                ${this.generateSlot("header", "header", ["app-header", "wireframe"])}
+                
                 <main class="app-body">
-                    <aside class="app-sidebar wireframe"></aside>
-                    <section class="app-content wireframe"></section>
+                    ${this.generateSlot("sidebar", "aside", ["app-sidebar", "wireframe"])}
+                    ${this.generateSlot("content", "section", ["app-content", "wireframe"])}
                 </main>
-                <footer class="app-footer wireframe"></footer>
+                
+                ${this.generateSlot("footer", "footer", ["app-footer", "wireframe"])}
             </div>
         `;
 
         this.dom.root.html(html);
 
-         // Cache DOM elements
-        this.dom.header = this.dom.root.find(".app-header");
-        this.dom.sidebar = this.dom.root.find(".app-sidebar");
-        this.dom.content = this.dom.root.find(".app-content");
-        this.dom.footer = this.dom.root.find(".app-footer");
-
-        console.log("AppShell: Layout rendered and DOM elements cached \n Cached DOM elements: ", this.dom);
+        console.log("AppShell: layout rendered");
     }
 
-    getHeaderSlot() {
-        return this.dom.header;
+    generateSlot(slotName, tag = "div", cssClasses = [], domID = "") {
+        const classAttr = cssClasses.join(" ");
+        const idAttr = domID ? `id="${domID}"` : "";
+
+        return `
+            <${tag}
+                class="${classAttr}"
+                data-slot="${slotName}"
+                ${idAttr}
+            ></${tag}>
+        `;
     }
 
-    getSidebarSlot() {
-        return this.dom.sidebar;
+    cacheSlots() {
+        this.dom.root.find("[data-slot]").each((index, element) => {
+            const $element = $(element);
+            const slotName = $element.data("slot");
+            this.dom.slots[slotName] = $element;
+        });
+
+        console.log("AppShell: cached slots", this.dom.slots);
     }
 
-    getContentSlot() {
-        return this.dom.content;
-    }
-
-    getFooterSlot() {
-        return this.dom.footer;
+    getSlot(slotName) {
+        return this.dom.slots[slotName] || null;
     }
 }

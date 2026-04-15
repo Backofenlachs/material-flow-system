@@ -13,10 +13,10 @@ export class AppManager {
         this.appShell = appShell;
 
         this.slots = {
-            header: this.appShell.getHeaderSlot(),
-            sidebar: this.appShell.getSidebarSlot(),
-            content: this.appShell.getContentSlot(),
-            footer: this.appShell.getFooterSlot()
+            header: this.appShell.getSlot('header'),
+            sidebar: this.appShell.getSlot('sidebar'),
+            content: this.appShell.getSlot('content'),
+            footer: this.appShell.getSlot('footer')
         };
 
         this.toolRegistry = new Map();

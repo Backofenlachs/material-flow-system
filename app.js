@@ -1,4 +1,5 @@
 import { AppShell } from "./src/core/AppShell.js";
+import { shellConfig } from "./src/core/ShellConfig.js";
 import { AppManager } from "./src/core/AppManager.js";
 
 import { HeaderTool } from "./src/components/tools/HeaderTool.js";
@@ -9,11 +10,12 @@ import { SearchTool } from "./src/components/tools/SearchTool.js";
 import { RiskTool } from "./src/components/tools/RiskTool.js"; 
 
 $(document).ready(() => {
+    
     const $app = $("#app");
     console.log("JQuery successfully loaded\n app element: ", $app);
     
     const appShell = new AppShell($app);
-    appShell.init();
+    appShell.init(shellConfig);
 
     const appManager = new AppManager(appShell);
 
