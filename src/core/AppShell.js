@@ -1,20 +1,20 @@
 /**
- * ToDo:
- * 1. AppShell renderd das grundlayout
- * 2. Header, Sidebar, Footer rendert jeweils einfachen Inhalt
- * 3. Search als searchtool erstellen und in content-area mounten
- * 4. erst dann weiter modularisieren
+ * AppShell
  * 
+ * Responsible for rendering the application layout from a configuration object 
+ * and managing named slot regions within the DOM.
  * 
-  <div class="app-shell">
-    <header id="app-header"></header>
-    <main class="app-body">
-        <aside id="app-sidebar"></aside>
-        <section id="app-content"></section>
-    </main>
-    <footer id="app-footer"></footer>
-    </div>
-
+ * Core responsibilities:
+ * - Translates a layout configuration (tree structure) into DOM elements
+ * - Identifies and chaches all slots elements (data-slots)
+ * - Provides access to slots for external systems (e.g. AppManager)
+ * 
+ * Notes:
+ * - Does not handle any business logic or tool rendering
+ * - Acts as the stuctural foundation for the UI
+ * 
+ * important:
+ * - The 'data-slot' attribute in the DOM acts as the unique key for slot identification and access
  */
 
 export class AppShell {
@@ -28,7 +28,6 @@ export class AppShell {
     init(layoutConfig) {
         const html = this.renderNode(layoutConfig);
         this.dom.root.html(html);
-        //this.renderLayout();
         this.cacheSlots();
     }
 
@@ -39,6 +38,7 @@ export class AppShell {
      */
     renderNode(nodeConfig) {
         const {
+            // node optionen
             tag = "div",
             slot = null,
             id = "",
@@ -59,25 +59,6 @@ export class AppShell {
                 ${childrenHtml}
             </${tag}>
         `;
-    }
-
-    renderLayout() { // old function uses generateSlots
-        const html = `
-            <div class="app-shell">
-                ${this.generateSlot("header", "header", ["app-header", "wireframe"])}
-                
-                <main class="app-body">
-                    ${this.generateSlot("sidebar", "aside", ["app-sidebar", "wireframe"])}
-                    ${this.generateSlot("content", "section", ["app-content", "wireframe"])}
-                </main>
-                
-                ${this.generateSlot("footer", "footer", ["app-footer", "wireframe"])}
-            </div>
-        `;
-
-        this.dom.root.html(html);
-
-        console.log("AppShell: layout rendered");
     }
 
     generateSlot(slotName, tag = "div", cssClasses = [], domID = "") {
