@@ -1,5 +1,5 @@
 import { AppShell } from "./src/core/AppShell.js";
-import { shellConfig } from "./src/core/ShellConfig.js";
+import { sidebarLayout as shellConfig} from "./src/core/ShellConfigs.js" ;
 import { AppManager } from "./src/core/AppManager.js";
 
 import { HeaderTool } from "./src/components/tools/HeaderTool.js";
@@ -19,26 +19,36 @@ $(document).ready(() => {
 
     const appManager = new AppManager(appShell);
 
-    // register all tools
-    appManager.registerTool("HeaderTool", HeaderTool);
-    appManager.registerTool("SidebarTool", SidebarTool);
-    appManager.registerTool("FooterTool", FooterTool);
-    appManager.registerTool("SearchTool", SearchTool);
-    appManager.registerTool("RiskTool", RiskTool);
-
-
-    appManager.mountTool("HeaderTool", "header");
-    appManager.mountTool("SidebarTool", "sidebar", { appManager }); // pass appManager to SidebarTool for tool switching
-    appManager.mountTool("FooterTool", "footer");
-
-    // initiales content tool
-    appManager.mountTool("SearchTool", "content");
-    
-    //const riskTool = new RiskTool($app);
-    //riskTool.init();
+    loadSideBarLayout(appManager);
+   //loadDualLayout(appManager);
 
 });
 
+function loadSideBarLayout(appManager){
+    // register all tools
+    appManager.registerTool("header", HeaderTool);
+    appManager.registerTool("sidebar", SidebarTool);
+    appManager.registerTool("footer", FooterTool);
+
+    appManager.registerTool("SearchTool", SearchTool);
+    appManager.registerTool("RiskTool", RiskTool);
+
+    appManager.mountTool("header", "header");
+    appManager.mountTool("sidebar", "sidebar", { appManager }); // pass appManager to SidebarTool for tool switching
+    appManager.mountTool("SearchTool", "content");
+    appManager.mountTool("footer", "footer");
+}
+
+
+function loadDualLayout(appManager) {
+    appManager.registerTool("header", HeaderTool);
+    appManager.registerTool("SearchTool", SearchTool);
+    appManager.registerTool("RiskTool", RiskTool);
+
+    appManager.mountTool("header", "header");
+    appManager.mountTool("SearchTool", "search");
+    appManager.mountTool("RiskTool", "risk");
+}
 
 
 /**

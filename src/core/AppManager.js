@@ -1,9 +1,5 @@
 /**
- * Erstmal funktionsfähig
- * dann mit interfaces und patterns weiter modularisieren
- * 
- * 1. AppShell mit Header, Sidebar, Content und Footer erstellen
- * 2. AppManager erstellen, der die Slots verwaltet und Tools mounten/unmounten kann
+ * alle tools werden in der tool regestry gespeichert mit einem string key
  */
 
 import { BaseTool } from "./BaseTool.js";
@@ -11,13 +7,6 @@ import { BaseTool } from "./BaseTool.js";
 export class AppManager {
     constructor(appShell) {
         this.appShell = appShell;
-
-        this.slots = {
-            header: this.appShell.getSlot('header'),
-            sidebar: this.appShell.getSlot('sidebar'),
-            content: this.appShell.getSlot('content'),
-            footer: this.appShell.getSlot('footer')
-        };
 
         this.toolRegistry = new Map();
         this.mountedTools = new Map();
@@ -49,7 +38,7 @@ export class AppManager {
      */
     mountTool(toolName, slotName, config=null) {
         const ToolClass = this.toolRegistry.get(toolName);
-        const $slot = this.slots[slotName];
+        const $slot = this.appShell.getSlot(slotName);
 
         if (!ToolClass) {
             throw new Error(`Tool "${toolName}" ist nicht registriert.`);
@@ -78,24 +67,28 @@ export class AppManager {
             name: toolName,
             instance: toolInstance
         });
+
+        return toolInstance;
     }
 
     unmountTool(slotName) {
         const mounted = this.mountedTools.get(slotName);
-
         if (!mounted) return;
 
         const { instance } = mounted;
+        const $slot = this.appShell.getSlot(slotName);
 
         if (typeof instance.destroy === "function") {
             instance.destroy();
         }
 
-        this.slots[slotName].empty();
+        if ($slot) {
+            $slot.empty();
+        }
         this.mountedTools.delete(slotName);
     }
 
-    switchTool(slotName, toolName, config={}) {
+    switchTool(slotName, toolName, config=null) {
         this.unmountTool(slotName);
         this.mountTool(toolName, slotName, config);
     }
