@@ -1,10 +1,12 @@
+import { SlotNames } from "./SlotNames.js";
+
 export const sidebarLayout = {
     tag: "div",
     classes: ["app-shell"],
     children: [
         {
             tag: "header",
-            slot: "header",
+            slot: SlotNames.HEADER,
             classes: ["app-header", "wireframe"]
         },
         {
@@ -13,19 +15,19 @@ export const sidebarLayout = {
             children: [
                 {
                     tag: "aside",
-                    slot: "sidebar",
+                    slot: SlotNames.SIDEBAR,
                     classes: ["app-sidebar", "wireframe"]
                 },
                 {
                     tag: "section",
-                    slot: "content",
+                    slot: SlotNames.CONTENT,
                     classes: ["app-content", "wireframe"]
                 }
             ]
         },
         {
             tag: "footer",
-            slot: "footer",
+            slot: SlotNames.FOOTER,
             classes: ["app-footer", "wireframe"]
         }
     ]
@@ -37,7 +39,7 @@ export const dualLayout = {
     children: [
         {
             tag: "header",
-            slot: "header",
+            slot: SlotNames.HEADER,
             classes: ["app-header", "wireframe"]
         },
         {
@@ -47,12 +49,12 @@ export const dualLayout = {
             children: [
                 {
                     tag: "left-section",
-                    slot: "search",
+                    slot: SlotNames.SEARCH,
                     classes: ["app-content", "wireframe"]
                 },
                 {
                     tag: "right-section",
-                    slot: "risk",
+                    slot: SlotNames.RISK,
                     classes: ["app-content", "wireframe"]
                 }
             ]

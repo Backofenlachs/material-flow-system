@@ -1,11 +1,15 @@
+// core
 import { AppShell } from "./src/core/AppShell.js";
-import { sidebarLayout as shellConfig} from "./src/core/ShellConfigs.js" ;
 import { AppManager } from "./src/core/AppManager.js";
 
+// configurationFiles
+import { sidebarLayout as shellConfig} from "./src/core/ShellConfigs.js" ;
+import { SlotNames } from "./src/core/SlotNames.js";
+
+// Tools
 import { HeaderTool } from "./src/components/tools/HeaderTool.js";
 import { FooterTool } from "./src/components/tools/FooterTool.js";
 import { SidebarTool } from "./src/components/tools/SidebarTool.js";
-
 import { SearchTool } from "./src/components/tools/SearchTool.js";
 import { RiskTool } from "./src/components/tools/RiskTool.js"; 
 
@@ -20,7 +24,7 @@ $(document).ready(() => {
     const appManager = new AppManager(appShell);
 
     loadSideBarLayout(appManager);
-   //loadDualLayout(appManager);
+    //loadDualLayout(appManager);
 
 });
 
@@ -29,14 +33,14 @@ function loadSideBarLayout(appManager){
     appManager.registerTool("header", HeaderTool);
     appManager.registerTool("sidebar", SidebarTool);
     appManager.registerTool("footer", FooterTool);
-
     appManager.registerTool("SearchTool", SearchTool);
     appManager.registerTool("RiskTool", RiskTool);
 
-    appManager.mountTool("header", "header");
-    appManager.mountTool("sidebar", "sidebar", { appManager }); // pass appManager to SidebarTool for tool switching
-    appManager.mountTool("SearchTool", "content");
-    appManager.mountTool("footer", "footer");
+    // mount aktive tools
+    appManager.mountTool("header", SlotNames.HEADER);
+    appManager.mountTool("sidebar", SlotNames.SIDEBAR, { appManager }); // pass appManager to SidebarTool for tool switching
+    appManager.mountTool("SearchTool", SlotNames.CONTENT);
+    appManager.mountTool("footer", SlotNames.FOOTER);
 }
 
 
@@ -45,9 +49,9 @@ function loadDualLayout(appManager) {
     appManager.registerTool("SearchTool", SearchTool);
     appManager.registerTool("RiskTool", RiskTool);
 
-    appManager.mountTool("header", "header");
-    appManager.mountTool("SearchTool", "search");
-    appManager.mountTool("RiskTool", "risk");
+    appManager.mountTool("header", SlotNames.HEADER);
+    appManager.mountTool("SearchTool", SlotNames.SEARCH);
+    appManager.mountTool("RiskTool", SlotNames.RISK);
 }
 
 
