@@ -2,84 +2,99 @@
 
 ### Modular UI System for CR-DSS
 
-A lightweight UI system built to create flexible, responsive interfaces for a Credit Risk Decision Support System (CR-DSS).
+A small UI system I’m building to create flexible interfaces for a Credit Risk Decision Support System (CR-DSS).
 
 ---
 
-## Core Idea
+## Idea
 
-Build the layout once.
-Swap the functionality.
-
-This project separates:
-
-* responsive layout (AppShell)
-* feature modules (tools)
-
-The UI structure remains stable while the content changes dynamically.
+Build the structure once.
+Configure it however you need.
+Swap the functionality at runtime.
 
 ---
 
 ## How it works
 
-The application uses a fixed, responsive layout:
+The layout is **not fixed**.
 
-* header
-* sidebar
-* content
-* footer
+It’s defined via a configuration and can be changed freely:
 
-Instead of building separate pages, different tools are mounted into these areas.
+* with or without sidebar
+* with or without header/footer
+* single or multiple content areas
+* completely different layouts
+
+Tools are then mounted into the defined slots.
 
 ```text
-Same layout → different tools → different UI
+Custom layout → mount tools → different UI
 ```
 
 ---
 
-## Example (CR-DSS)
+## Architecture (short)
 
-Risk Analysis View
-
-* sidebar → navigation
-* content → RiskTool
-* result → evaluate applicants
-
-Data Exploration View
-
-* sidebar → filters
-* content → SearchTool
-* result → explore datasets
-
-Future Dashboard
-
-* sidebar → minimal
-* content → chart and risk overview tools
-* result → aggregated risk insights
-
-The layout stays the same, only the tools change.
+* **AppShell** → renders the layout from a config
+* **AppManager** → registers, mounts and switches tools
+* **Tools** → self-contained features (Search, Risk, etc.)
 
 ---
 
-## Purpose
+## Example Layouts
 
-This system is being developed as a frontend foundation for CR-DSS to enable:
+### Sidebar Layout
 
-* fast creation of different UI variants
-* reusable feature modules
-* flexible integration of data sources
-* clear separation of layout and logic
+* header
+* sidebar (navigation)
+* content
+* footer
+
+### Dual Layout
+
+* header
+* multiple content areas (e.g. Search + Risk side by side)
+
+Same system — just different configuration.
+
+---
+
+## Current Features
+
+* SearchTool → filter and explore data
+* RiskTool → simple credit risk evaluation
+* SidebarTool → switch tools at runtime
+
+---
+
+## Why I built this
+
+I wanted to:
+
+* understand UI architecture deeper
+* build something modular without a framework
+* create a flexible base for CR-DSS
 
 ---
 
 ## Current State
 
-* core system implemented
-* SearchTool and RiskTool working
-* Sidebar with tool switching in progress
+* config-driven layout system working
+* tools can be mounted and switched dynamically
+* multiple layouts already supported
+
+More details:
+
+```
+docs/v0_1/
+```
 
 ---
 
 ## Summary
 
-A responsive UI shell combined with swappable tools, designed to build flexible interfaces for CR-DSS.
+A configurable UI system with dynamic tools.
+
+Not page-based.
+Not fixed.
+Fully composable.
