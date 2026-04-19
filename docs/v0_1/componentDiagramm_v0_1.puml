@@ -1,0 +1,129 @@
+@startuml UI-Library_Component_Diagram_v0_1_TTB
+skinparam style strictuml
+skinparam componentStyle rectangle
+skinparam linetype ortho
+skinparam nodesep 80
+skinparam ranksep 100
+top to bottom direction
+
+title UI-Library Architecture v0_1 - Component Diagram
+
+package "Bootstrap" {
+    component "index.html" as IndexHtml
+    component "app.js" as AppJs
+}
+
+package "Configuration" {
+    component "ShellConfig" as ShellConfig
+    component "SlotNames" as SlotNames
+}
+
+package "Core" {
+    component "AppShell" as AppShell
+    component "AppManager" as AppManager
+    component "BaseTool" as BaseTool
+}
+
+package "UI Tools" {
+    component "HeaderTool" as HeaderTool
+    component "FooterTool" as FooterTool
+    component "SidebarTool" as SidebarTool
+    component "SearchTool" as SearchTool
+    component "RiskTool" as RiskTool
+}
+
+package "Search Feature" {
+    component "SearchController" as SearchController
+    component "SearchModel" as SearchModel
+    component "MaterialListView" as MaterialListView
+}
+
+package "Risk Feature" {
+    component "RiskController" as RiskController
+    component "RiskModel" as RiskModel
+    component "RiskView" as RiskView
+}
+
+component "Browser DOM" as DOM
+
+IndexHtml --> AppJs
+IndexHtml --> DOM
+
+AppJs --> ShellConfig
+AppJs --> SlotNames
+AppJs --> AppShell
+AppJs --> AppManager
+
+ShellConfig --> SlotNames
+
+AppShell --> ShellConfig
+AppManager --> AppShell
+AppManager --> BaseTool
+
+BaseTool <.. HeaderTool
+BaseTool <.. FooterTool
+BaseTool <.. SidebarTool
+BaseTool <.. SearchTool
+BaseTool <.. RiskTool
+
+AppManager --> HeaderTool
+AppManager --> FooterTool
+AppManager --> SidebarTool
+AppManager --> SearchTool
+AppManager --> RiskTool
+
+SidebarTool --> AppManager
+
+SearchTool --> SearchController
+SearchController --> SearchModel
+SearchController --> MaterialListView
+
+RiskTool --> RiskController
+RiskController --> RiskModel
+RiskController --> RiskView
+
+AppShell --> DOM
+HeaderTool --> DOM
+FooterTool --> DOM
+SidebarTool --> DOM
+SearchController --> DOM
+MaterialListView --> DOM
+RiskController --> DOM
+RiskView --> DOM
+
+note right of AppJs
+Bootstrap / composition root
+
+- initializes AppShell
+- creates AppManager
+- selects layout
+- registers tools
+- mounts default tools
+end note
+
+note right of AppShell
+Responsible for structural DOM generation.
+
+Renders layout from ShellConfig
+and exposes named slots.
+end note
+
+note right of AppManager
+Coordinates runtime composition:
+
+- register tools
+- mount tools
+- unmount tools
+- switch tools
+end note
+
+note right of DOM
+DOM manipulation is split into:
+
+- structural rendering by AppShell
+- direct tool rendering by simple tools
+- feature-specific updates by
+  controllers and views
+end note
+
+@enduml

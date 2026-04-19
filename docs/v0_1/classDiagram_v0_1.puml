@@ -1,0 +1,187 @@
+@startuml UI-Library v0_1
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+left to right direction
+
+title UI-Library Architecture v0_1 - Class Diagram
+
+package "Core" {
+    class AppShell {
+        - dom.root : jQuery
+        - dom.slots : Object
+        + constructor($rootElement)
+        + init(shellConfig)
+        + renderNode(nodeConfig) : string
+        + cacheSlots()
+        + getSlot(slotName)
+    }
+
+    class AppManager {
+        - appShell : AppShell
+        - toolRegistry : Map
+        - mountedTools : Map
+        + constructor(appShell)
+        + registerTool(toolName, ToolClass)
+        + mountTool(toolName, slotName, config = null)
+        + unmountTool(slotName)
+        + switchTool(slotName, toolName, config = null)
+        + getMountedTool(slotName)
+    }
+
+    abstract class BaseTool {
+        # $root : jQuery
+        # config : Object
+        + constructor($rootElement, config = {})
+        + init()
+        + render()
+        + destroy()
+    }
+}
+
+package "Configuration" {
+    class ShellConfig <<data>>
+
+    enum SlotNames {
+        HEADER = "header"
+        SIDEBAR = "sidebar"
+        CONTENT = "content"
+        FOOTER = "footer"
+        SEARCH = "search"
+        RISK = "risk"
+    }
+}
+
+package "Tools" {
+    class HeaderTool {
+        - title : string
+        + init()
+        + render()
+        + destroy()
+    }
+
+    class FooterTool {
+        - text
+        + init()
+        + render()
+        + destroy()
+    }
+
+    class SidebarTool {
+        - appManager : AppManager
+        - navItems : Array
+        + init()
+        + render()
+        + destroy()
+        + bindEvents()
+    }
+
+    class SearchTool {
+        - controller : SearchController
+        + init()
+        + render()
+        + destroy()
+        + getController()
+    }
+
+    class RiskTool {
+        - riskController : RiskController
+        + init()
+        + render()
+        + destroy()
+    }
+}
+
+package "Search Feature" {
+    class SearchController {
+        - dom.root : jQuery
+        - dom.form : jQuery
+        - dom.input : jQuery
+        - dom.results : jQuery
+        - model : SearchModel
+        - view : MaterialListView
+        + constructor($rootElement)
+        + init()
+        + renderLayout()
+        + setupViews()
+        + render()
+        + bindEvents()
+        + executeSearch(searchTerm)
+    }
+
+    class SearchModel {
+        - rawData : Array
+        - currentData : Array
+        + constructor(mockData = [])
+        + getCurrentData()
+        + fetchMaterials(searchTerm = "")
+        + filterCurrentData(predicateFn)
+        + sortCurrentData(compareFn)
+    }
+
+    class MaterialListView {
+        - root : jQuery
+        + constructor(rootSelector)
+        + render(materials)
+    }
+}
+
+package "Risk Feature" {
+    class RiskController {
+        - dom.root : jQuery
+        - dom.riskToolContainer : jQuery
+        - dom.form : jQuery
+        - dom.input.name : jQuery
+        - dom.input.age : jQuery
+        - dom.input.loanAmount : jQuery
+        - dom.input.interestRate : jQuery
+        - dom.result : jQuery
+        - model : RiskModel
+        - view : RiskView
+        + constructor($rootElement)
+        + init()
+        + renderLayout()
+        + cacheDom()
+        + bindEvents()
+        + getFormData()
+        + render()
+    }
+
+    class RiskModel {
+        - baseScore : number
+        + constructor()
+        + evaluateApplicant(data)
+        + getCategory(score)
+        + getDecision(category)
+    }
+
+    class RiskView {
+        - dom.root : jQuery
+        + constructor($rootElement)
+        + renderResult(result)
+    }
+}
+
+AppManager --> AppShell : uses
+AppShell ..> ShellConfig : initialized with
+AppManager --> BaseTool
+
+BaseTool <|-- HeaderTool
+BaseTool <|-- FooterTool
+BaseTool <|-- SidebarTool
+BaseTool <|-- SearchTool
+BaseTool <|-- RiskTool
+
+SearchTool --> SearchController : creates
+SearchController --> SearchModel : uses
+SearchController --> MaterialListView : uses
+
+RiskTool --> RiskController : creates
+RiskController --> RiskModel : uses
+RiskController --> RiskView : uses
+
+SidebarTool --> AppManager : uses (switchTool)
+
+ShellConfig ..> SlotNames : references
+
+@enduml

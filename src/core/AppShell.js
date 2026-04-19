@@ -33,8 +33,12 @@ export class AppShell {
 
 
     /**
-     * DIese funktion ist reingehackt sollte schöner übersichtlicher geschreiben werden
-     * nicht funktion ruft sich selbst auf.
+     * Recursively renders a layout node and its children into an HTML string.
+     *
+     * Notes:
+     * - Uses the layout configuration tree as input
+     * - Supports nested child nodes
+     * - Adds slot metadata via the data-slot attribute when configured
      */
     renderNode(nodeConfig) {
         const {
@@ -60,7 +64,7 @@ export class AppShell {
             </${tag}>
         `;
     }
-
+    /*
     generateSlot(slotName, tag = "div", cssClasses = [], domID = "") {
         const classAttr = cssClasses.join(" ");
         const idAttr = domID ? `id="${domID}"` : "";
@@ -72,7 +76,7 @@ export class AppShell {
                 ${idAttr}
             ></${tag}>
         `;
-    }
+    }*/
 
     cacheSlots() {
         this.dom.root.find("[data-slot]").each((index, element) => {

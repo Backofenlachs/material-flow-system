@@ -1,5 +1,14 @@
 /**
- * alle tools werden in der tool regestry gespeichert mit einem string key
+ * AppManager
+ * 
+ * Central coordinator for tool registration, mounting, unmountin a
+ * and switching within appshell slots.
+ * 
+ * Core responsibilities:
+ * - Stores available tool classes in a registry
+ * - Instantiates tools fr a given slot
+ * - Controls the tool lifecycle (init, render, destroy)
+ * - Tracks currently mounted tool instances per slot
  */
 
 import { BaseTool } from "./BaseTool.js";
@@ -17,7 +26,7 @@ export class AppManager {
      * Die Tool-Klasse muss von BaseTool erben und mindestens init() und render() implementieren
      * 
      * @param {string} toolName 
-     * @param {BaseTool} ToolClass 
+     * @param {typeof BaseTool} ToolClass 
      */
     registerTool(toolName, ToolClass) {
         if (!toolName || !ToolClass) {
@@ -34,7 +43,7 @@ export class AppManager {
     /**
      * 
      * @param {string} toolName 
-     * @param {string} slotName soll noch geändert werden zu einem enum 
+     * @param {string} slotName
      */
     mountTool(toolName, slotName, config=null) {
         const ToolClass = this.toolRegistry.get(toolName);
@@ -90,7 +99,7 @@ export class AppManager {
 
     switchTool(slotName, toolName, config=null) {
         this.unmountTool(slotName);
-        this.mountTool(toolName, slotName, config);
+        return this.mountTool(toolName, slotName, config);
     }
 
     getMountedTool(slotName) {
