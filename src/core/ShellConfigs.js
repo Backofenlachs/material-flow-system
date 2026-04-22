@@ -1,64 +1,20 @@
 import { SlotNames } from "./SlotNames.js";
+import { node, slot } from "./LayoutFactory.js"
 
-export const sidebarLayout = {
-    tag: "div",
-    classes: ["app-shell"],
-    children: [
-        {
-            tag: "header",
-            slot: SlotNames.HEADER,
-            classes: ["app-header", "wireframe"]
-        },
-        {
-            tag: "main",
-            classes: ["app-body"],
-            children: [
-                {
-                    tag: "aside",
-                    slot: SlotNames.SIDEBAR,
-                    classes: ["app-sidebar", "wireframe"]
-                },
-                {
-                    tag: "section",
-                    slot: SlotNames.CONTENT,
-                    classes: ["app-content", "wireframe"]
-                }
-            ]
-        },
-        {
-            tag: "footer",
-            slot: SlotNames.FOOTER,
-            classes: ["app-footer", "wireframe"]
-        }
-    ]
-};
 
-export const dualLayout = {
-    tag: "div",
-    classes: ["app-shell"],
-    children: [
-        {
-            tag: "header",
-            slot: SlotNames.HEADER,
-            classes: ["app-header", "wireframe"]
-        },
-        {
-            tag: "main",
-            classes: ["app-body"],
-            style: ["flex-direction:column"],
-            children: [
-                {
-                    tag: "left-section",
-                    slot: SlotNames.SEARCH,
-                    classes: ["app-content", "wireframe"]
-                },
-                {
-                    tag: "right-section",
-                    slot: SlotNames.RISK,
-                    classes: ["app-content", "wireframe"]
-                }
-            ]
-            
-        }
-    ]
-};
+export const sidebarLayout = node("div", ["app-shell"],[
+    slot("header", SlotNames.HEADER, ["app-header", "wireframe"]),
+    node("main", ["app-body"], [
+        slot("aside", SlotNames.SIDEBAR, ["app-sidebar", "wireframe"]),
+        slot("section", SlotNames.CONTENT, ["app-content", "wireframe"]) 
+    ]),
+    slot("footer", SlotNames.FOOTER, ["app-footer", "wireframe"])
+]);
+
+export const dualLayout = node("div", ["app-shell"], [
+    slot("header", SlotNames.HEADER, ["app-header", "wireframe"]),
+    node("main", ["app-body"], [
+        slot("section", SlotNames.SEARCH, ["app-content", "wireframe"]),
+        slot("section", SlotNames.RISK, ["app-content", "wireframe "])
+    ], ["flex-direction: column"])
+]);

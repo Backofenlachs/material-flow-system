@@ -3,7 +3,7 @@ import { AppShell } from "./src/core/AppShell.js";
 import { AppManager } from "./src/core/AppManager.js";
 
 // configurationFiles
-import { sidebarLayout as shellConfig} from "./src/core/ShellConfigs.js" ;
+import { dualLayout as shellConfig} from "./src/core/ShellConfigs.js" ;
 import { SlotNames } from "./src/core/SlotNames.js";
 
 // Tools
@@ -20,11 +20,11 @@ $(document).ready(() => {
     
     const appShell = new AppShell($app);
     appShell.init(shellConfig);
-
+    /*
     const appManager = new AppManager(appShell);
 
     loadSideBarLayout(appManager);
-    //loadDualLayout(appManager);
+    //loadDualLayout(appManager );*/
 
 });
 
