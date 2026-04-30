@@ -3,7 +3,7 @@ import { AppShell } from "./src/core/AppShell.js";
 import { AppManager } from "./src/core/AppManager.js";
 
 // configurationFiles
-import { dualLayout as shellConfig} from "./src/core/ShellConfigs.js" ;
+import { sidebarLayout as shellConfig} from "./src/core/ShellConfigs.js" ;
 import { SlotNames } from "./src/core/SlotNames.js";
 
 // Tools

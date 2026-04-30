@@ -17,35 +17,43 @@
  * for quick layout prototyping. Regular styling should still be handled via CSS classes.
 */
 
+function validateNonEmptyString(value, name, context) {
+    if (typeof value !== "string" || value.trim() === "") {
+        throw new Error(`[${context}] Invalid "${name}": expected non-empty string, got ${typeof value}`);
+    }
+}
 
-export function node(tag="div", classes=[], children=[], style=null) {
-
-     // --- tag validation ---
-    if (typeof tag !== "string" || tag.trim() === "") {
-        throw new Error(`[LayoutFactory.slot] Invalid "tag": expected non-empty string, got ${typeof tag}`);
+function validateStringArray(value, name, context) {
+    if (!Array.isArray(value)) {
+        throw new Error(`[${context}] Invalid "${name}": expected array of strings, got ${typeof value}`);
     }
 
-    // --- classes validation ---
-    if (!Array.isArray(classes)) {
-        throw new Error(`[LayoutFactory.slot] Invalid "classes": expected array of strings, got ${typeof classes}`);
-    }
-
-    classes.forEach((cls, index) => {
-        if (typeof cls !== "string") {
-            throw new Error(`[LayoutFactory.slot] Invalid class at index ${index}: expected string, got ${typeof cls}`);
+    value.forEach((item, index) => {
+        if (typeof item !== "string") {
+            throw new Error(`[${context}] Invalid item in "${name}" at index ${index}: expected string, got ${typeof item}`);
         }
     });
+}
 
-    // --- children validation ---
+function validateChildren(children, context) {
     if (!Array.isArray(children)) {
         throw new Error (`[LayoutFactory.slot] Invalid "children": expected array, got ${typeof children}`);
     }
 
     children.forEach((child, index) => {
         if (typeof child !== "object" || child === null) {
-            throw new Error(`[LayoutFactory.slot] Invalid child at index ${index}: expected object, got ${typeof child}`);
+            throw new Error(`[${context}] Invalid child at index ${index}: expected object, got ${typeof child}`);
         }
     });
+}
+
+
+export function node(tag="div", classes=[], children=[], style=null) {
+    const context = "LayoutFactory.node";
+
+    validateNonEmptyString(tag, "tag", context);
+    validateStringArray(classes, "classes", context);
+    validateChildren(children, context);
 
     // --- style reminder ---
     if (style !== null && !Array.isArray(style)) {
@@ -62,38 +70,13 @@ export function node(tag="div", classes=[], children=[], style=null) {
 }
 
 export function slot(tag="div", slotName, classes=[], children=[]) {
+    const context = "LayoutFactory.slot";
 
-    // --- tag validation ---
-    if (typeof tag !== "string" || tag.trim() === "") {
-        throw new Error(`[LayoutFactory.slot] Invalid "tag": expected non-empty string, got ${typeof tag}`);
-    }
+    validateNonEmptyString(tag, "slot", context);
+    validateNonEmptyString(slotName, "slotName", context);
+    validateStringArray(classes, "classes", context);
+    validateChildren(children, context);
 
-    // --- slotName validation ---
-    if (typeof slotName !== "string" || slotName.trim() === "") {
-        throw new Error( `[LayoutFactory.slot] Invalid "slotName": expected non-empty string, got ${typeof slotName}`);
-    }
-
-    // --- classes validation ---
-    if (!Array.isArray(classes)) {
-        throw new Error(`[LayoutFactory.slot] Invalid "classes": expected array of strings, got ${typeof classes}`);
-    }
-
-    classes.forEach((cls, index) => {
-        if (typeof cls !== "string") {
-            throw new Error(`[LayoutFactory.slot] Invalid class at index ${index}: expected string, got ${typeof cls}`);
-        }
-    });
-
-    // --- children validation ---
-    if (!Array.isArray(children)) {
-        throw new Error (`[LayoutFactory.slot] Invalid "children": expected array, got ${typeof children}`);
-    }
-
-    children.forEach((child, index) => {
-        if (typeof child !== "object" || child === null) {
-            throw new Error(`[LayoutFactory.slot] Invalid child at index ${index}: expected object, got ${typeof child}`);
-        }
-    });
 
     return {
         tag: tag,
