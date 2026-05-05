@@ -20,7 +20,7 @@ $(document).ready(() => {
     
     const appShell = new AppShell($app);
     appShell.init(shellConfig);
-    /*
+    
     const appManager = new AppManager(appShell);
 
     loadSideBarLayout(appManager);

@@ -1,7 +1,7 @@
 # ADR-0003: Standardizing Layout Configuration via LayoutFactory functions
 
 ## Status
-Proposed
+Accepted
 
 Date: 2026-04-28
 
