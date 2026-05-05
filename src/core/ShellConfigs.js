@@ -1,20 +1,93 @@
 import { SlotNames } from "./SlotNames.js";
 import { node, slot } from "./LayoutFactory.js"
 
+// tools
+import { HeaderTool } from "../components/tools/HeaderTool.js";
+import { SidebarTool } from "../components/tools/SidebarTool.js";
+import { SearchTool } from "../components/tools/SearchTool.js";
+import { RiskTool } from "../components/tools/RiskTool.js";
+import { FooterTool } from "../components/tools/FooterTool.js";
 
-export const sidebarLayout = node("div", ["app-shell"],[
-    slot("header", SlotNames.HEADER, ["app-header", "wireframe"]),
-    node("main", ["app-body"], [
-        slot("aside", SlotNames.SIDEBAR, ["app-sidebar", "wireframe"]),
-        slot("section", SlotNames.CONTENT, ["app-content", "wireframe"]) 
+
+
+export const sidebarLayout = {
+    layout: node("div", ["app-shell"],[
+        slot("header", SlotNames.HEADER, ["app-header", "wireframe"]),
+        node("main", ["app-body"], [
+            slot("aside", SlotNames.SIDEBAR, ["app-sidebar", "wireframe"]),
+            slot("section", SlotNames.CONTENT, ["app-content", "wireframe"]) 
+        ]),
+        slot("footer", SlotNames.FOOTER, ["app-footer", "wireframe"])
     ]),
-    slot("footer", SlotNames.FOOTER, ["app-footer", "wireframe"])
-]);
+    mounts:[
+        {   // HeaderTool in HEADER slot
+            slotName: SlotNames.HEADER,
+            toolName: "header",
+            toolClass: HeaderTool,
+            options: null,
+            activeOnLoad: true
+        },
+        {   // SidebarTool in SIDEBAR slot
+            slotName: SlotNames.SIDEBAR,
+            toolName: "sidebar",
+            toolClass: SidebarTool,
+            options: null,  // SidebarTool benötigt eigentlich appManager, aber wenn das hier übergeben wird, existiert er noch nicht. Daher wird appManager direkt beim mounten übergeben. Das ist momentan etwas inkonsistent, aber es funktioniert für den Prototypen.
+            activeOnLoad: true
+        },
+        {   // SearchTool in CONTENT slot
+            slotName: SlotNames.CONTENT,
+            toolName: "search",
+            toolClass: SearchTool,
+            options: null,
+            activeOnLoad: true
+        },
+        {   // RiskTool but just in regestry
+            slotName: null, // not mounted by default
+            toolName: "risk",
+            toolClass: RiskTool,
+            options: null,
+            activeOnLoad: false // only registered but not mounted on load 
+        },
+        {   // FooterTool in FOOTER slot
+            slotName: SlotNames.FOOTER,
+            toolName: "footer",
+            options: null,
+            toolClass: FooterTool,
+            activeOnLoad: true
+        }
+    ]
+};
 
-export const dualLayout = node("div", ["app-shell"], [
-    slot("header", SlotNames.HEADER, ["app-header", "wireframe"]),
-    node("main", ["app-body"], [
-        slot("section", SlotNames.SEARCH, ["app-content", "wireframe"]),
-        slot("section", SlotNames.RISK, ["app-content", "wireframe "])
-    ], ["flex-direction: column"])
-]);
+export const dualLayout = {
+    layout: node("div", ["app-shell"], [
+        slot("header", SlotNames.HEADER, ["app-header", "wireframe"]),
+        node("main", ["app-body"], [
+            slot("section", SlotNames.SEARCH, ["app-content", "wireframe"]),
+            slot("section", SlotNames.RISK, ["app-content", "wireframe "])
+        ], ["flex-direction: column"])
+    ]),
+    mounts: [
+        {
+            slotName: SlotNames.HEADER,
+            toolName: "header",
+            toolClass: HeaderTool,
+            options: null,
+            activeOnLoad: true
+        },
+        {
+            slotName: SlotNames.SEARCH,
+            toolName: "search",
+            toolClass: SearchTool,
+            options: null,
+            activeOnLoad: true
+        },
+        {
+            slotName: SlotNames.RISK,
+            toolName: "risk",
+            toolClass: RiskTool,
+            options: null,
+            activeOnLoad: true
+        }
+    ]
+
+};

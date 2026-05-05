@@ -3,7 +3,7 @@ import { AppShell } from "./src/core/AppShell.js";
 import { AppManager } from "./src/core/AppManager.js";
 
 // configurationFiles
-import { sidebarLayout as shellConfig} from "./src/core/ShellConfigs.js" ;
+import { dualLayout as shellConfig} from "./src/core/ShellConfigs.js" ;
 import { SlotNames } from "./src/core/SlotNames.js";
 
 // Tools
@@ -19,19 +19,33 @@ $(document).ready(() => {
     console.log("JQuery successfully loaded\n app element: ", $app);
     
     const appShell = new AppShell($app);
-    appShell.init(shellConfig);
+    appShell.init(shellConfig.layout);
     
     const appManager = new AppManager(appShell);
 
-    loadSideBarLayout(appManager);
+    loadLayout(appManager, shellConfig.mounts);
     //loadDualLayout(appManager );*/
 
 });
 
-function loadSideBarLayout(appManager){
+function loadLayout(appManager, mounts){
+
+    mounts.forEach((tool) => {
+        console.log(`tool: ${tool.toolName} ${tool}`);
+        if (!tool.activeOnLoad) {
+            appManager.registerTool(tool.toolName, tool.toolClass);
+
+            return;
+        }
+        appManager.registerTool(tool.toolName, tool.toolClass);
+        
+        // momentan wird jedem tool appManager übergeben, aber eigentlich sollten nur controllTools das benutzen dürfen
+        appManager.mountTool(tool.toolName, tool.slotName, { appManager });
+    });
+    /*
     // register all tools
     appManager.registerTool("header", HeaderTool);
-    appManager.registerTool("sidebar", SidebarTool);
+    appManager.registerTocontinueol("sidebar", SidebarTool);
     appManager.registerTool("footer", FooterTool);
     appManager.registerTool("SearchTool", SearchTool);
     appManager.registerTool("RiskTool", RiskTool);
@@ -40,7 +54,7 @@ function loadSideBarLayout(appManager){
     appManager.mountTool("header", SlotNames.HEADER);
     appManager.mountTool("sidebar", SlotNames.SIDEBAR, { appManager }); // pass appManager to SidebarTool for tool switching
     appManager.mountTool("SearchTool", SlotNames.CONTENT);
-    appManager.mountTool("footer", SlotNames.FOOTER);
+    appManager.mountTool("footer", SlotNames.FOOTER);*/
 }
 
 

@@ -7,8 +7,8 @@ export class SidebarTool extends BaseTool {
         this.appManager = config.appManager || null;
 
         this.navItems = [
-            { label: "Search", toolName: "SearchTool" },
-            { label: "Risk Assessment", toolName: "RiskTool" }
+            { label: "Search", toolName: "search" },
+            { label: "Risk Assessment", toolName: "risk" }
         ];
     }
 
