@@ -1,9 +1,9 @@
 // core
 import { AppShell } from "./src/core/AppShell.js";
-import { AppManager } from "./src/core/AppManager.js";
+import { MountingEngine } from "./src/core/MountingEngine.js";
 
 // configurationFiles
-import { dualLayout as shellConfig} from "./src/core/ShellConfigs.js" ;
+import { sidebarLayout as shellConfig} from "./src/core/ShellConfigs.js" ;
 import { SlotNames } from "./src/core/SlotNames.js";
 
 // Tools
@@ -21,24 +21,24 @@ $(document).ready(() => {
     const appShell = new AppShell($app);
     appShell.init(shellConfig.layout);
     
-    const appManager = new AppManager(appShell);
+    const mountingEngine = new MountingEngine(appShell);
 
-    loadLayout(appManager, shellConfig.mounts);
+    loadLayout(mountingEngine, shellConfig.mounts);
 
 });
 
-function loadLayout(appManager, mounts){
+function loadLayout(mountingEngine, mounts){
 
     mounts.forEach((tool) => {
-        console.log(`tool: ${tool.toolName} ${tool}`);
         if (!tool.activeOnLoad) {
-            appManager.registerTool(tool.toolName, tool.toolClass);
+            mountingEngine.registerTool(tool.toolName, tool.toolClass);
 
             return;
         }
-        appManager.registerTool(tool.toolName, tool.toolClass);
         
-        // momentan wird jedem tool appManager übergeben, aber eigentlich sollten nur controllTools das benutzen dürfen
-        appManager.mountTool(tool.toolName, tool.slotName, { appManager });
+        mountingEngine.registerTool(tool.toolName, tool.toolClass);
+        
+        // momentan wird jedem tool mountingEngine übergeben, aber eigentlich sollten nur controllTools das benutzen dürfen
+        mountingEngine.mountTool(tool.toolName, tool.slotName, { mountingEngine });
     });
 }

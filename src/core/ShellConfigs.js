@@ -31,7 +31,7 @@ export const sidebarLayout = {
             slotName: SlotNames.SIDEBAR,
             toolName: "sidebar",
             toolClass: SidebarTool,
-            options: null,  // SidebarTool benötigt eigentlich appManager, aber wenn das hier übergeben wird, existiert er noch nicht. Daher wird appManager direkt beim mounten übergeben. Das ist momentan etwas inkonsistent, aber es funktioniert für den Prototypen.
+            options: null,  // SidebarTool benötigt eigentlich mountingEngine, aber wenn das hier übergeben wird, existiert er noch nicht. Daher wird mountingEngine direkt beim mounten übergeben. Das ist momentan etwas inkonsistent, aber es funktioniert für den Prototypen.
             activeOnLoad: true
         },
         {   // SearchTool in CONTENT slot

@@ -4,7 +4,7 @@ export class SidebarTool extends BaseTool {
     constructor($rootElement, config = {}) {
         super($rootElement);
 
-        this.appManager = config.appManager || null;
+        this.mountingEngine = config.mountingEngine || null;
 
         this.navItems = [
             { label: "Search", toolName: "search" },
@@ -43,12 +43,12 @@ export class SidebarTool extends BaseTool {
             const $link = $(event.currentTarget);
             const toolName = $link.data("tool");
 
-            if (!this.appManager) {
-                console.warn("SidebarTool: appManager fehlt.");
+            if (!this.mountingEngine) {
+                console.warn("SidebarTool: mountingEngine fehlt.");
                 return;
             }
 
-            this.appManager.switchTool("content", toolName);
+            this.mountingEngine.switchTool("content", toolName);
         });
     }
 

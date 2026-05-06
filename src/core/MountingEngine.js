@@ -1,5 +1,5 @@
 /**
- * AppManager
+ * Mounting (Formerly AppManager)
  * 
  * Central coordinator for tool registration, mounting, unmountin a
  * and switching within appshell slots.
@@ -13,7 +13,7 @@
 
 import { BaseTool } from "./BaseTool.js";
 
-export class AppManager {
+export class MountingEngine {
     constructor(appShell) {
         this.appShell = appShell;
 

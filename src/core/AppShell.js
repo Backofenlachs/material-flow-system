@@ -7,7 +7,7 @@
  * Core responsibilities:
  * - Translates a layout configuration (tree structure) into DOM elements
  * - Identifies and chaches all slots elements (data-slots)
- * - Provides access to slots for external systems (e.g. AppManager)
+ * - Provides access to slots for external systems (e.g. MountingEngine)
  * 
  * Notes:
  * - Does not handle any business logic or tool rendering
