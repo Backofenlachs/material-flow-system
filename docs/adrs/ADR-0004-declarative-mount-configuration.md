@@ -1,7 +1,7 @@
 # ADR-0004: Declarative Mount Configuration
 
 ## Status
-proposed
+Accepted
 
 Date: 2026-04-30
 

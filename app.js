@@ -29,16 +29,21 @@ $(document).ready(() => {
 
 function loadLayout(mountingEngine, mounts){
 
+    // register all tools
     mounts.forEach((tool) => {
-        if (!tool.activeOnLoad) {
-            mountingEngine.registerTool(tool.toolName, tool.toolClass);
-
-            return;
-        }
         
         mountingEngine.registerTool(tool.toolName, tool.toolClass);
         
-        // momentan wird jedem tool mountingEngine übergeben, aber eigentlich sollten nur controllTools das benutzen dürfen
-        mountingEngine.mountTool(tool.toolName, tool.slotName, { mountingEngine });
     });
+
+    // mount all aktive tools.
+    mounts.forEach((tool) =>  {
+        if (!tool.activeOnLoad) {
+            return
+        }
+
+        
+        mountingEngine.mountTool(tool.toolName, tool.slotName, { mountingEngine });
+
+    })
 }
