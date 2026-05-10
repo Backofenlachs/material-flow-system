@@ -1,49 +1,16 @@
 // core
-import { AppShell } from "./src/core/AppShell.js";
-import { MountingEngine } from "./src/core/MountingEngine.js";
+import { AppController } from "./src/core/AppController.js";
 
 // configurationFiles
-import { sidebarLayout as shellConfig} from "./src/core/ShellConfigs.js" ;
-import { SlotNames } from "./src/core/SlotNames.js";
+import { sidebarLayout as layoutConfig} from "./src/core/ShellConfigs.js" ;
 
-// Tools
-import { HeaderTool } from "./src/components/tools/HeaderTool.js";
-import { FooterTool } from "./src/components/tools/FooterTool.js";
-import { SidebarTool } from "./src/components/tools/SidebarTool.js";
-import { SearchTool } from "./src/components/tools/SearchTool.js";
-import { RiskTool } from "./src/components/tools/RiskTool.js"; 
 
 $(document).ready(() => {
     
     const $app = $("#app");
     console.log("JQuery successfully loaded\n app element: ", $app);
     
-    const appShell = new AppShell($app);
-    appShell.init(shellConfig.layout);
-    
-    const mountingEngine = new MountingEngine(appShell);
-
-    loadLayout(mountingEngine, shellConfig.mounts);
+    const appController = new AppController();
+    appController.init($app, layoutConfig);
 
 });
-
-function loadLayout(mountingEngine, mounts){
-
-    // register all tools
-    mounts.forEach((tool) => {
-        
-        mountingEngine.registerTool(tool.toolName, tool.toolClass);
-        
-    });
-
-    // mount all aktive tools.
-    mounts.forEach((tool) =>  {
-        if (!tool.activeOnLoad) {
-            return
-        }
-
-        
-        mountingEngine.mountTool(tool.toolName, tool.slotName, { mountingEngine });
-
-    })
-}
