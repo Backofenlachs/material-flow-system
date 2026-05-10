@@ -89,11 +89,11 @@ The `MountingEngine` seperates tool registration,
 tool instantiation, and active mounting.
 
 ```JS
-toolDefinitions = new Map() // toolname -> ToolClass
-toolInstances   = new Map() // toolName -> persistent instance
+toolRegistry    = new Map() // toolname -> ToolClass
+toolInstances   = new Map() // toolName -> persistent class instance
 mountedTools    = new Map() // slotName -> toolName
 ```
-`toolDefifnitions` stores available tools.
+`toolRegistry` stores all available tools definitions.
 
 Toll instances are created lazily on first mount and reused afterwards
 

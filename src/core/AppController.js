@@ -39,8 +39,8 @@ export class AppController {
         this.appShell.init(this.layoutConfig.layout);
 
         // mountingEngine gets slots from appShell
-        this.mountingEngine = new MountingEngine(this.appShell);
-        
+        this.mountingEngine = new MountingEngine();
+        this.mountingEngine.init(this.appShell);        
         
         // register everytool tool from appShell.mounts in toolRegestry
         this.layoutConfig.mounts.forEach((tool) => {

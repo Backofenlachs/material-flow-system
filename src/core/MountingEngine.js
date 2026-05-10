@@ -14,55 +14,79 @@
 import { BaseTool } from "./BaseTool.js";
 
 export class MountingEngine {
-    constructor(appShell) {
+    constructor() {
+        this.appShell = null;
+
+        this.toolRegistry = null; // toolName => ToolClass; holds all tools and its definitons that exists in the app
+        this.toolInstances = null; // toolName => Tool Instance; For persistence while multiple mounting
+        this.mountedTools = null; // slot => toolName
+    }
+
+    init(appShell) {
         this.appShell = appShell;
 
         this.toolRegistry = new Map();
+        this.toolInstances = new Map();
         this.mountedTools = new Map();
     }
 
     /**
-     * Regestriert ein Tool mit einem eindeutigen Namen(string) und der Tool-Klasse 
-     * Die Tool-Klasse muss von BaseTool erben und mindestens init() und render() implementieren
+     * Registers a Tool inside the internal tool  regestry.
      * 
-     * @param {string} toolName 
-     * @param {typeof BaseTool} ToolClass 
+     * The regestry stores:
+     * key   = toolname
+     * value = ToolClass
+     * 
+     * Every registered ToolClass must inherit from BaseTool.
+     * 
+     * This method only registers the tool definition.
+     * No tool instance will be created.
      */
     registerTool(toolName, ToolClass) {
-        if (!toolName || !ToolClass) {
-            throw new Error("registerTool benötigt toolName und ToolClass.");
+        if (!toolName || !ToolClass) { 
+            throw new Error(
+                "[MountingEngine] registerTool(): needs toolName and ToolClass"
+            );
         }
 
         if ( !(ToolClass.prototype instanceof BaseTool) ) { // check if ToolClass extends BaseTool
             throw new Error(`ToolClass für "${toolName}" muss von BaseTool erben.`);
+            throw new Error(
+                `[MountingEngine] registerTool(): ToolClass for "${toolName}" has to inherit from BaseTool`
+            )
         }
 
         this.toolRegistry.set(toolName, ToolClass);
     }
 
     /**
-     * 
-     * @param {string} toolName 
-     * @param {string} slotName
+     * Mounts a registered tool into a slot and manages its runtime instance.
      */
     mountTool(toolName, slotName, config=null) {
-        const ToolClass = this.toolRegistry.get(toolName);
         const $slot = this.appShell.getSlot(slotName);
-
-        if (!ToolClass) {
-            throw new Error(`Tool "${toolName}" ist nicht registriert.`);
+        
+        // validate params
+        if (!this.toolRegistry.get(toolName)) {
+            throw new Error(
+                `[MountingEngine] Tool: "${toolName}" is not registered`
+            );
         }
 
         if (!$slot) {
-            throw new Error(`Slot "${slotName}" existiert nicht.`);
+            throw new Error (
+                `[MountingEngine] Slot "${slotName} does not exists`
+            );
         }
 
-        if (this.mountedTools.has(slotName)) {
-            this.unmountTool(slotName);
-        }
 
-        const toolInstance = new ToolClass($slot, config); 
+        // instaziate tool when no instance in toolInstances exists
+        if (!this.toolInstances.get(toolName)) {
+            const toolClass = this.toolRegistry.get(toolName);
+            this.toolInstances.set(toolName, new toolClass($slot, config));
+        } 
 
+
+        const toolInstance =  this.toolInstances.get(toolName); 
 
         if (typeof toolInstance.init === "function") {
             toolInstance.init();
@@ -72,24 +96,19 @@ export class MountingEngine {
             toolInstance.render();
         }
 
-        this.mountedTools.set(slotName, {
-            name: toolName,
-            instance: toolInstance
-        });
-
+        // add to mountedTool map
+        this.mountedTools.set(slotName, toolName);
+        
+        console.log(`successfully mounted:${toolName}, ${toolInstance}`);
         return toolInstance;
     }
 
     unmountTool(slotName) {
-        const mounted = this.mountedTools.get(slotName);
-        if (!mounted) return;
+        const toolName = this.mountedTools.get(slotName);
+        if (!toolName) return;
 
-        const { instance } = mounted;
+        const instance = this.toolInstances.get(toolName);
         const $slot = this.appShell.getSlot(slotName);
-
-        if (typeof instance.destroy === "function") {
-            instance.destroy();
-        }
 
         if ($slot) {
             $slot.empty();
@@ -97,12 +116,52 @@ export class MountingEngine {
         this.mountedTools.delete(slotName);
     }
 
+    destroyTool(toolName) {
+        this.mountedTools.delete(toolName);
+        this.toolInstances.get(toolName).destroy();
+        this.toolInstances.delete(toolName);
+    }
+
+    /**
+     * alle mounted tools unmounten
+     * alle tool instances zerstören
+     * alle runtime maps leeren
+     * runtime referenzen freigeben
+     */
+    destroy() {
+        // unmount all mounted tools
+        for (const slotName of Array.from(this.mountedTools.keys())) {
+            this.unmountTool(slotName);
+        }
+
+        // destroy all tool instances
+        for (const toolName of Array.from(this.toolInstances.keys())) { 
+            this.destroyTool(toolName)
+        }
+
+        // cleanup all runtime maps
+        this.mountedTools.clear();
+        this.toolInstances.clear();
+        this.toolRegistry.clear();
+
+        this.toolRegistry = null;
+        this.toolInstances = null;
+        this.mountedTools = null;
+
+        this.appShell = null;
+    }
+
     switchTool(slotName, toolName, config=null) {
         this.unmountTool(slotName);
         return this.mountTool(toolName, slotName, config);
     }
 
-    getMountedTool(slotName) {
-        return this.mountedTools.get(slotName) || null;
+    getMountedToolInstanceBySlotName(slotName) {
+        const toolName = this.mountedTools.get(slotName);
+
+        if(toolName == null) {
+            return null;
+        }
+        return this.toolInstance.get(toolName) ?? null;
     }
 }
