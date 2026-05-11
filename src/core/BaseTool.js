@@ -23,18 +23,23 @@
  * @param {Object} [config={}] - Optional configuration object for the tool
  */
 export class BaseTool {
-    constructor($rootElement, config) {
+    constructor() {
+
+
         if (new.target === BaseTool) {
             throw new Error("BaseTool darf nicht direkt instanziiert werden.");
         }
+        
+        // Internal lifecycle state
+        this.initialized = false;
+        this.rendered = false;
 
-        if (!$rootElement) {
-            throw new Error("Tool benötigt ein gültiges Root-Element.");
-        }
+        // shared runtime references
+        this.config = null;
+        this.runtime = null;
 
-
-        this.$root = $rootElement;
-        this.config = config || {};
+        // DOM references
+        this.$root;
     }
 
     /**
@@ -49,8 +54,13 @@ export class BaseTool {
      * @abstract
      * @returns {void}
      */
-    init() {
-        throw new Error("init() muss vom Tool implementiert werden.");
+    init(config={}, runtime={}) {
+        this.config = config;
+        this.runtime = runtime;
+
+        this.initialized = true;
+        
+        return this;
     }
 
     /**
@@ -60,8 +70,16 @@ export class BaseTool {
      * @abstract
      * @returns {void}
      */
-    render() {
-        throw new Error("render() muss vom Tool implementiert werden.");
+    render($root) {
+        if (!$root || !$root.jquery || $root.length === 0) {
+            throw new Error(
+                "[BaseTool.render] Invalid $root: expected non-empty jQuery object"
+            );
+        }
+
+        this.$root = $root;
+
+        this.rendered = true;
     }
 
     /**
@@ -77,5 +95,9 @@ export class BaseTool {
         if (this.$root) {
             this.$root.empty();
         }
+
+        this.$root = null;
+        this.rendered = null;
+        this.initialized = null;
     }
 }

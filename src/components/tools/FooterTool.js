@@ -2,17 +2,21 @@ import { BaseTool } from "../../core/BaseTool.js";
 
 
 export class FooterTool extends BaseTool {
-    constructor($rootElement) {
-        super($rootElement);
+    constructor() {
+        super();
 
-        this.text = "© 2026 Material Flow System. All rights reserved. ";
+        this.text = null;
     }  
 
-    init() {
-        // aktuell kein setup nötig, da Footer nur statischen Text anzeigt
+    init(config, runtime) {
+        super.init(config, runtime);
+        
+        this.text = config?.text ?? "© 2026 Material Flow System. All rights reserved. ";
     }
     
-    render() {
+    render($root) {
+        super.render($root);
+
         const $html = $(`
             <p>${this.text}</p>
         `);
@@ -21,6 +25,6 @@ export class FooterTool extends BaseTool {
     }
 
     destroy() {
-        this.$root.empty();
+        super.destroy();
     }
 }

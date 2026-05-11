@@ -9,7 +9,31 @@ import { RiskTool } from "../components/tools/RiskTool.js";
 import { FooterTool } from "../components/tools/FooterTool.js";
 
 
+export const testLayout = {
+    layout: node("div", ["app-Shell"], [
+        slot("header", SlotNames.HEADER, ["app-header", "wireframe"]),
+        slot("footer", SlotNames.FOOTER, ["app-footer", "wireframe"])
+    ]),
+    mounts: [
+        {
+            slotName: SlotNames.HEADER,
+            toolName: "header",
+            toolClass: HeaderTool,
+            options: {title: "UI-Library"},
+            activeOnLoad: true
+        },
+        {
+            slotName: SlotNames.FOOTER,
+            toolName: "footer",
+            toolClass: FooterTool,
+            options: {text: "@ 2026 ui-library. All rights reserved."},
+            activeOnLoad: true
+        }
+    ]
+};
 
+// SearchTool, RiskTool und SidebarTool funktionieren gerade nicht
+// wegen migration der livecycles (siehe ADR-0005)
 export const sidebarLayout = {
     layout: node("div", ["app-shell"],[
         slot("header", SlotNames.HEADER, ["app-header", "wireframe"]),

@@ -62,7 +62,7 @@ export class MountingEngine {
     /**
      * Mounts a registered tool into a slot and manages its runtime instance.
      */
-    mountTool(toolName, slotName, config=null) {
+    mountTool(toolName, slotName, options=null) {
         const $slot = this.appShell.getSlot(slotName);
         
         // validate params
@@ -82,18 +82,18 @@ export class MountingEngine {
         // instaziate tool when no instance in toolInstances exists
         if (!this.toolInstances.get(toolName)) {
             const toolClass = this.toolRegistry.get(toolName);
-            this.toolInstances.set(toolName, new toolClass($slot, config));
+            this.toolInstances.set(toolName, new toolClass());
         } 
 
 
         const toolInstance =  this.toolInstances.get(toolName); 
 
         if (typeof toolInstance.init === "function") {
-            toolInstance.init();
+            toolInstance.init(options, { mountingEngine: this.mountingEngine });
         }
 
         if (typeof toolInstance.render === "function") {
-            toolInstance.render();
+            toolInstance.render($slot);
         }
 
         // add to mountedTool map
