@@ -62,7 +62,7 @@ export class MountingEngine {
     /**
      * Mounts a registered tool into a slot and manages its runtime instance.
      */
-    mountTool(toolName, slotName, options=null) {
+    mountTool(toolName, slotName, config=null) {
         const $slot = this.appShell.getSlot(slotName);
         
         // validate params
@@ -89,7 +89,7 @@ export class MountingEngine {
         const toolInstance =  this.toolInstances.get(toolName); 
 
         if (typeof toolInstance.init === "function") {
-            toolInstance.init(options, { mountingEngine: this.mountingEngine });
+            toolInstance.init(config, { mountingEngine: this.mountingEngine });
         }
 
         if (typeof toolInstance.render === "function") {

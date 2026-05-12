@@ -19,14 +19,14 @@ export const testLayout = {
             slotName: SlotNames.HEADER,
             toolName: "header",
             toolClass: HeaderTool,
-            options: {title: "UI-Library"},
+            config: {title: "UI-Library"},
             activeOnLoad: true
         },
         {
             slotName: SlotNames.FOOTER,
             toolName: "footer",
             toolClass: FooterTool,
-            options: {text: "@ 2026 ui-library. All rights reserved."},
+            config: {text: "@ 2026 ui-library. All rights reserved."},
             activeOnLoad: true
         }
     ]
@@ -48,34 +48,34 @@ export const sidebarLayout = {
             slotName: SlotNames.HEADER,
             toolName: "header",
             toolClass: HeaderTool,
-            options: null,
+            config: null,
             activeOnLoad: true
         },
         {   // SidebarTool in SIDEBAR slot
             slotName: SlotNames.SIDEBAR,
             toolName: "sidebar",
             toolClass: SidebarTool,
-            options: null,  // SidebarTool benötigt eigentlich mountingEngine, aber wenn das hier übergeben wird, existiert er noch nicht. Daher wird mountingEngine direkt beim mounten übergeben. Das ist momentan etwas inkonsistent, aber es funktioniert für den Prototypen.
+            config: null,  // SidebarTool benötigt eigentlich mountingEngine, aber wenn das hier übergeben wird, existiert er noch nicht. Daher wird mountingEngine direkt beim mounten übergeben. Das ist momentan etwas inkonsistent, aber es funktioniert für den Prototypen.
             activeOnLoad: true
         },
         {   // SearchTool in CONTENT slot
             slotName: SlotNames.CONTENT,
             toolName: "search",
             toolClass: SearchTool,
-            options: null,
+            config: null,
             activeOnLoad: true
         },
         {   // RiskTool but just in regestry
             slotName: null, // not mounted by default
             toolName: "risk",
             toolClass: RiskTool,
-            options: null,
+            config: null,
             activeOnLoad: false // only registered but not mounted on load 
         },
         {   // FooterTool in FOOTER slot
             slotName: SlotNames.FOOTER,
             toolName: "footer",
-            options: null,
+            config: null,
             toolClass: FooterTool,
             activeOnLoad: true
         }
@@ -95,21 +95,21 @@ export const dualLayout = {
             slotName: SlotNames.HEADER,
             toolName: "header",
             toolClass: HeaderTool,
-            options: null,
+            config: null,
             activeOnLoad: true
         },
         {
             slotName: SlotNames.SEARCH,
             toolName: "search",
             toolClass: SearchTool,
-            options: null,
+            config: null,
             activeOnLoad: true
         },
         {
             slotName: SlotNames.RISK,
             toolName: "risk",
             toolClass: RiskTool,
-            options: null,
+            config: null,
             activeOnLoad: true
         }
     ]

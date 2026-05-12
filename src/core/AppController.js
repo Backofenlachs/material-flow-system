@@ -54,8 +54,8 @@ export class AppController {
                 return
             }
 
-            console.log("config:", tool.options);
-            this.mountingEngine.mountTool(tool.toolName, tool.slotName, tool.options);
+            console.log("config:", tool.config);
+            this.mountingEngine.mountTool(tool.toolName, tool.slotName, tool.config);
 
         });
 
