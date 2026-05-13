@@ -6,28 +6,28 @@ import { BaseTool } from "../../core/BaseTool.js";
 import { SearchController } from "../../controllers/SearchController.js";
 
 export class SearchTool extends BaseTool {
-    constructor($rootElement) {
-        super($rootElement);
+    
+    constructor() {
+        super();
 
         this.controller = null;
     }
 
-    init() { 
-        this.controller = new SearchController(this.$root);
-        this.controller.init();
+    init(config, runtime) { 
+        super.init(config, runtime);
+
+        this.controller = new SearchController();
+        this.controller.init(config, runtime);
     }
 
-    render() {
-        if (this.controller) {
-            this.controller.render();
-        }
+    render($root) {
+        super.render($root);
+        this.controller.render($root);
     }
 
     destroy() {
-        // später: event listener entfernen etc.
-    }
+        this.controller.destroy()
 
-    getController() {
-        return this.controller;
+        super.destroy();
     }
 }

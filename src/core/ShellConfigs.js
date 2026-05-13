@@ -12,7 +12,8 @@ import { FooterTool } from "../components/tools/FooterTool.js";
 export const testLayout = {
     layout: node("div", ["app-Shell"], [
         slot("header", SlotNames.HEADER, ["app-header", "wireframe"]),
-        slot("footer", SlotNames.FOOTER, ["app-footer", "wireframe"])
+        slot("footer", SlotNames.FOOTER, ["app-footer", "wireframe"]),
+        slot("section", SlotNames.SEARCH,  ["appContent", "wireframe"])
     ]),
     mounts: [
         {
@@ -27,6 +28,13 @@ export const testLayout = {
             toolName: "footer",
             toolClass: FooterTool,
             config: {text: "@ 2026 ui-library. All rights reserved."},
+            activeOnLoad: true
+        },
+        {
+            slotName: SlotNames.SEARCH,
+            toolName: "search",
+            toolClass: SearchTool,
+            config: null,
             activeOnLoad: true
         }
     ]

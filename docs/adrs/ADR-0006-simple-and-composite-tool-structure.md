@@ -39,7 +39,7 @@ The UI-Library distinguishes between two primary tool variants:
 
 Both variants can be integrated through the same standardized `BaseTool` lifecycle defined in ADR-0005.
 
----
+This ADR defines structural categories, not mandatory inheritance classes.
 
 ### SimpleTool
 ```
@@ -66,9 +66,9 @@ This variant is intended for smaller or less complex tools where a dedicated int
 A `CompositeTool` uses an internal controller-based architecture.
 
 Characteristics:
-- the Tool creates and connects internal components
+- the Tool creates the controller. The controller creates and coordinates model and view components.
 - the Controller orchestrates application logic and statechanges
-- Views handle DOM rendering and exposesing DOM references.
+- Views handle DOM rendering and cacje DOM references needed by the controller.
 - The controller handles user interaction, event binding, and state coordination.
 -`destroy()` must clean up DOM bindings and internal runtime references.
 

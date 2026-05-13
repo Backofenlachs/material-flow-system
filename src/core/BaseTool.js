@@ -23,9 +23,8 @@
  * @param {Object} [config={}] - Optional configuration object for the tool
  */
 export class BaseTool {
+
     constructor() {
-
-
         if (new.target === BaseTool) {
             throw new Error("BaseTool darf nicht direkt instanziiert werden.");
         }
@@ -39,7 +38,7 @@ export class BaseTool {
         this.runtime = null;
 
         // DOM references
-        this.$root;
+        this.$root = null;
     }
 
     /**
@@ -48,7 +47,6 @@ export class BaseTool {
      *
      * Typical responsibilities:
      * - create internal controller / model / view instances
-     * - bind events
      * - prepare local state
      *
      * @abstract
@@ -90,14 +88,12 @@ export class BaseTool {
      * @returns {void}
      */
     destroy() {
-        // optional override
-
         if (this.$root) {
             this.$root.empty();
         }
 
         this.$root = null;
-        this.rendered = null;
-        this.initialized = null;
+        this.rendered = false;
+        this.initialized = false;
     }
 }
