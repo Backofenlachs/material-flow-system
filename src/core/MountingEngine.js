@@ -89,7 +89,7 @@ export class MountingEngine {
         const toolInstance =  this.toolInstances.get(toolName); 
 
         if (typeof toolInstance.init === "function") {
-            toolInstance.init(config, { mountingEngine: this.mountingEngine });
+            toolInstance.init(config, { mountingEngine: this });
         }
 
         if (typeof toolInstance.render === "function") {

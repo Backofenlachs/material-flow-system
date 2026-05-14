@@ -1,43 +1,44 @@
 import { BaseTool } from "../../core/BaseTool.js";
 
 export class SidebarTool extends BaseTool {
-    constructor($rootElement, config = {}) {
-        super($rootElement);
+    constructor() {
+        super()
 
-        this.mountingEngine = config.mountingEngine || null;
+        this.mountingEngine = null;
 
-        this.navItems = [
+        // configs
+        this.navItems = null;
+    }
+
+    init(config, runtime) {
+        super.init(config, runtime);
+        console.log("[SidebarTool.init] runtime ", runtime)
+        this.mountingEngine = runtime.mountingEngine;
+
+        this.navItems = config?.navItems ?? [
             { label: "Search", toolName: "search" },
             { label: "Risk Assessment", toolName: "risk" }
         ];
     }
 
-    init() {
-        this.bindEvents();
-    }
-
-    render() {
-        const navItemsHtml = this.navItems.map((item) => `
-            <li class="sidebar-nav__item">
-                <a href="#" class="sidebar-nav__link" data-tool="${item.toolName}">
-                    ${item.label}
-                </a>
-            </li>
-        `).join("");
+    render($root) {
+        super.render($root);
 
         this.$root.html(`
             <div class="sidebar-tool wireframe">
                 <nav class="sidebar-tool__nav">
                     <ul class="sidebar-nav">
-                        ${navItemsHtml}
+                        ${this.createNavItemsHtml()}
                     </ul>
                 </nav>
             </div>
         `);
+
+        this.bindEvents($root);
     }
 
-    bindEvents() {
-        this.$root.on("click", ".sidebar-nav__link", (event) => {
+    bindEvents($root) {
+        $root.on("click", ".sidebar-nav__link", (event) => {
             event.preventDefault();
 
             const $link = $(event.currentTarget);
@@ -55,5 +56,19 @@ export class SidebarTool extends BaseTool {
     destroy() {
         this.$root.off("click", ".sidebar-nav__link");
         this.$root.empty();
+
+        this.$root = null;
+        this.mountingEngine = null;
+        this.navItems = null;
+    }
+
+    createNavItemsHtml() {
+        return this.navItems.map((item) => `
+            <li class="sidebar-nav__item">
+                <a href="#" class="sidebar-nav__link" data-tool="${item.toolName}">
+                    ${item.label}
+                </a>
+            </li>
+        `).join("");
     }
 }
