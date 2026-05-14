@@ -3,6 +3,13 @@ export const SlotNames = Object.freeze({
     SIDEBAR: "sidebar",
     CONTENT: "content",
     FOOTER: "footer",
-    SEARCH: "search",
-    RISK: "risk"
+
+    PRIMARY: "primary",
+    SECONDARY: "secondary",
+    TERTIARY: "tertiary",
+
+    LEFT: "left",
+    RIGHT: "right",
+    TOP: "top",
+    BOTTOM: "bottom",
 })

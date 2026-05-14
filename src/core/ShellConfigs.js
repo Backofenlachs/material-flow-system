@@ -9,40 +9,6 @@ import { RiskTool } from "../components/tools/RiskTool.js";
 import { FooterTool } from "../components/tools/FooterTool.js";
 
 
-export const testLayout = {
-    layout: node("div", ["app-Shell"], [
-        slot("header", SlotNames.HEADER, ["app-header", "wireframe"]),
-        slot("footer", SlotNames.FOOTER, ["app-footer", "wireframe"]),
-        slot("section", SlotNames.RISK,  ["appContent", "wireframe"])
-
-    ]),
-    mounts: [
-        {
-            slotName: SlotNames.HEADER,
-            toolName: "header",
-            toolClass: HeaderTool,
-            config: {title: "UI-Library"},
-            activeOnLoad: true
-        },
-        {
-            slotName: SlotNames.FOOTER,
-            toolName: "footer",
-            toolClass: FooterTool,
-            config: {text: "@ 2026 ui-library. All rights reserved."},
-            activeOnLoad: true
-        },
-        {
-            slotName: SlotNames.RISK,
-            toolName: "risk",
-            toolClass: RiskTool,
-            config: null,
-            activeOnLoad: true
-        }
-    ]
-};
-
-// SearchTool, RiskTool und SidebarTool funktionieren gerade nicht
-// wegen migration der livecycles (siehe ADR-0005)
 export const sidebarLayout = {
     layout: node("div", ["app-shell"],[
         slot("header", SlotNames.HEADER, ["app-header", "wireframe"]),
@@ -64,7 +30,7 @@ export const sidebarLayout = {
             slotName: SlotNames.SIDEBAR,
             toolName: "sidebar",
             toolClass: SidebarTool,
-            config: null,  // SidebarTool benötigt eigentlich mountingEngine, aber wenn das hier übergeben wird, existiert er noch nicht. Daher wird mountingEngine direkt beim mounten übergeben. Das ist momentan etwas inkonsistent, aber es funktioniert für den Prototypen.
+            config: null,  
             activeOnLoad: true
         },
         {   // SearchTool in CONTENT slot
@@ -95,8 +61,8 @@ export const dualLayout = {
     layout: node("div", ["app-shell"], [
         slot("header", SlotNames.HEADER, ["app-header", "wireframe"]),
         node("main", ["app-body"], [
-            slot("section", SlotNames.SEARCH, ["app-content", "wireframe"]),
-            slot("section", SlotNames.RISK, ["app-content", "wireframe "])
+            slot("section", SlotNames.PRIMARY, ["app-content", "wireframe"]),
+            slot("section", SlotNames.SECONDARY, ["app-content", "wireframe "])
         ], ["flex-direction: column"])
     ]),
     mounts: [
@@ -108,14 +74,14 @@ export const dualLayout = {
             activeOnLoad: true
         },
         {
-            slotName: SlotNames.SEARCH,
+            slotName: SlotNames.PRIMARY,
             toolName: "search",
             toolClass: SearchTool,
             config: null,
             activeOnLoad: true
         },
         {
-            slotName: SlotNames.RISK,
+            slotName: SlotNames.SECONDARY,
             toolName: "risk",
             toolClass: RiskTool,
             config: null,
@@ -123,4 +89,36 @@ export const dualLayout = {
         }
     ]
 
+};
+
+
+export const CRDSS = {
+    layout: node("div", ["app-shell"], [
+        slot("header", SlotNames.HEADER, ["app-header", "wireframe"]),
+        slot("section", SlotNames.PRIMARY, ["app-content", "wireframe"]),
+        slot("footer", SlotNames.FOOTER, ["app-footer", "wireframe"])
+    ]),
+    mounts: [
+        {
+            slotName: SlotNames.HEADER,
+            toolName: "header",
+            toolClass: HeaderTool,
+            config: {title: "CR-DSS"},
+            activeOnLoad: true
+        },
+        {
+            slotName: SlotNames.PRIMARY,
+            toolName: "risk",
+            toolClass: RiskTool,
+            config: null,
+            activeOnLoad: true
+        },
+        {
+            slotName: SlotNames.FOOTER,
+            toolName: "footer",
+            toolClass: FooterTool,
+            config: {text: "Credit Risk - Descision Support System UI v0.1.0 with ui-engine v0.2.0"},
+            activeOnLoad: true
+        }
+    ]
 };
