@@ -13,7 +13,8 @@ export const testLayout = {
     layout: node("div", ["app-Shell"], [
         slot("header", SlotNames.HEADER, ["app-header", "wireframe"]),
         slot("footer", SlotNames.FOOTER, ["app-footer", "wireframe"]),
-        slot("section", SlotNames.SEARCH,  ["appContent", "wireframe"])
+        slot("section", SlotNames.RISK,  ["appContent", "wireframe"])
+
     ]),
     mounts: [
         {
@@ -31,9 +32,9 @@ export const testLayout = {
             activeOnLoad: true
         },
         {
-            slotName: SlotNames.SEARCH,
-            toolName: "search",
-            toolClass: SearchTool,
+            slotName: SlotNames.RISK,
+            toolName: "risk",
+            toolClass: RiskTool,
             config: null,
             activeOnLoad: true
         }

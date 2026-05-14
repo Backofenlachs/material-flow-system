@@ -6,7 +6,6 @@ import { BaseTool } from "../../core/BaseTool.js";
 import { SearchController } from "../../controllers/SearchController.js";
 
 export class SearchTool extends BaseTool {
-    
     constructor() {
         super();
 

@@ -63,14 +63,17 @@ export class SearchController {
     }
 
     destroy() {
+        this.$root = null;
+        this.model = null;
+        
         if (!this.view?.dom) return;
 
         this.view.dom.form?.off("submit");
         this.view.dom.input?.off("input");
-
-        this.$root = null;
-        this.model = null;
+        
         this.view = null;
+
+
     }
 
 
