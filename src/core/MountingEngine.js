@@ -50,7 +50,6 @@ export class MountingEngine {
         }
 
         if ( !(ToolClass.prototype instanceof BaseTool) ) { // check if ToolClass extends BaseTool
-            throw new Error(`ToolClass für "${toolName}" muss von BaseTool erben.`);
             throw new Error(
                 `[MountingEngine] registerTool(): ToolClass for "${toolName}" has to inherit from BaseTool`
             )
@@ -141,7 +140,7 @@ export class MountingEngine {
 
         // cleanup all runtime maps
         this.mountedTools.clear();
-        this.toolInstances.clear();
+        this.toolInstances.clear();runtime
         this.toolRegistry.clear();
 
         this.toolRegistry = null;
@@ -162,6 +161,6 @@ export class MountingEngine {
         if(toolName == null) {
             return null;
         }
-        return this.toolInstance.get(toolName) ?? null;
+        return this.toolInstances.get(toolName) ?? null;
     }
 }

@@ -1,0 +1,133 @@
+@startuml UI-Engine v0.2 - Architectural Class Overview
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+left to right direction
+
+title UI-Engine Architecture v0.2 - Class Overview
+
+package "Core" {
+
+    class AppController {
+        + runtime : runtime
+        - appShell : AppShell
+        - mountingEngine : MountingEngine
+        - layoutConfig : Object
+        + init($rootElement, layoutConfig)
+        + destroy()
+    }
+
+    class MountingEngine {
+        - appShell : AppShell
+        + init(appShell)
+        + registerTool(toolName)
+        + mountTool(toolName, slotName, config=null)
+        + unmountTool(slotName)
+        + destroyTool(toolName)
+        + destroy()
+    }
+
+    class AppShell {
+        - dom.root : jQuery
+        - dom.slots : Object
+        + constructor($rootElement)
+        + init(layoutConfig)
+        + renderNode(nodeConfig) : string
+        + cacheSlots()
+        + getSlot(slotName)
+    }
+
+    abstract class BaseTool {
+        # $root : jQuery
+        # config : Object
+        # runtime : Object
+        + init(config, runtime)
+        + render($root)
+        + destroy()
+    }
+}
+
+package "Configuration" {
+    
+    class LayoutConfig <<config>> {
+        + layout
+        + mounts
+    }
+
+    note top of LayoutConfig
+    layout is Built using helper functions:
+    - node(...)
+    - slot(...)
+    from LayoutFactory.js
+    end note
+
+    note right of LayoutConfig 
+    Enum SlotNames
+    connects the layout and mounting plan.
+    end note
+
+}
+
+package "Tools" {
+
+    class SimpleTool <<pattern>> {
+        + init(config, runtime)
+        + render($root)
+        + destroy()
+    }
+
+    class CompositeTool <<pattern>> {
+        - controller
+        + init(config, runtime)
+        + render($root)
+        + destroy()
+    }
+
+    class ToolController {
+        - $root : JQuery
+        - model
+        - view
+        + init(config, runtime)
+        + render($root)
+        + bindEvents(dom)
+        + destroy()
+    }
+
+    class ToolModel {
+        
+    }
+
+    class ToolView {
+        - dom
+        + render($root)
+        + cacheDom()
+    }
+}
+
+
+AppController --> LayoutConfig : holds
+
+AppController *-- AppShell
+AppController *-- MountingEngine
+MountingEngine -left-> AppShell : getSlot(slot Name)
+MountingEngine ---> BaseTool : init(mounts.config, runtime)
+ 
+BaseTool <|-- SimpleTool
+BaseTool <|-left- CompositeTool
+
+CompositeTool *-- ToolController
+ToolController *-- ToolModel
+ToolController *-- ToolView
+
+AppShell ..> LayoutConfig : reads layout
+MountingEngine ..> LayoutConfig : reads mounts
+
+note left of AppController
+lifecycle flow:
+AppController
+    -> AppShell
+    -> MountingEngine
+    -> BaseTool.init/render/destroy
+end note
+
+@enduml
