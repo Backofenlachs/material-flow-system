@@ -1,100 +1,137 @@
-# Material Flow System
+# UI-Engine
 
-### Modular UI System for CR-DSS
+### Modular UI Engine for CR-DSS
 
-A small UI system I’m building to create flexible interfaces for a Credit Risk Decision Support System (CR-DSS).
+A modular UI engine built in Vanilla JavaScript to explore long-term UI architecture,
+runtime composition, and maintainable frontend system design.
 
----
-
-## Idea
-
-Build the structure once.
-Configure it however you need.
-Swap the functionality at runtime.
+Originally developed as the frontend foundation for the **Credit Risk Decision Support System (CR-DSS)**
 
 ---
 
-## How it works
+## Goals
 
-The layout is **not fixed**.
+The project focuses on:
+- modular UI architecture
+- runtime-based tool mounting
+- configurable layouts
+- lifecycle standardization
+- maintainable frontend structures
+- logn-term system evolution
+The focus is architecture and system design rather than visual styling.
 
-It’s defined via a configuration and can be changed freely:
+---
 
-* with or without sidebar
-* with or without header/footer
-* single or multiple content areas
-* completely different layouts
+## Core Idea
 
-Tools are then mounted into the defined slots.
+The UI structure is defined declaratively through configuration objects.
 
-```text
-Custom layout → mount tools → different UI
+Layouts are composed from reusable layout nodes and slots, while tools are mounted
+dynamically throug a standardized lifecycle.
+
+```
+LayoutConfig -> AppShell -> MountingEngine -> BaseTool livecycle -> mounted tools
 ```
 
 ---
 
-## Architecture (short)
+## Core Architecture
 
-* **AppShell** → renders the layout from a config
-* **AppManager** → registers, mounts and switches tools
-* **Tools** → self-contained features (Search, Risk, etc.)
+### AppController
+Main orchestration layer responsible for:
+- runtime initialization
+- AppShell initializaion
+- MountingEngine coordination
+- processing LayoutConfig
+
+### AppShell
+Renders the structural Layout and provides mountable slot containers.
+
+### Mounting Engine
+Handles:
+- tool registration
+- mounting/unmounting
+- runtime tool switching
+- lifecycle execution
+
+### BaseTool
+Standardize lifecycle contracts for all mountable tools.
+```JS
+constructor()
+    -> init(config, runtime)
+    -> render($root)
+    -> destroy()
+```
 
 ---
 
-## Example Layouts
+## Tool Patterns
 
-### Sidebar Layout
+### SimpleTool
+Lightweight tools with direct rendering logic.
+Examples:
+- HeaderTool
+- FooterTool
 
-* header
-* sidebar (navigation)
-* content
-* footer
+### CompositeTool
+Controller-based tools with seperated logic and rendering.
+```
+CompositeTool
+    -> ToolController
+        -> ToolModel
+        -> ToolView
+```
+Examples:
+-  SearchTool
+-  RiskTool
 
-### Dual Layout
+---
 
-* header
-* multiple content areas (e.g. Search + Risk side by side)
-
-Same system — just different configuration.
+## Layout System
+Layouts are created through configuration objects using helper functions from
+`LayoutFactory.js`
+```JS
+node(...)
+slot(...)
+```
+The LayoutFactory improves:
+- readability
+- consistency
+- validation of layout structures
 
 ---
 
 ## Current Features
-
-* SearchTool → filter and explore data
-* RiskTool → simple credit risk evaluation
-* SidebarTool → switch tools at runtime
-
----
-
-## Why I built this
-
-I wanted to:
-
-* understand UI architecture deeper
-* build something modular without a framework
-* create a flexible base for CR-DSS
+- declarative layout configuration
+- dynamic tool mounting
+- runtime tool switching
+- standardized lifecycle handling
+- configurable slot-based layouts
+- MVC-style composite tools
+- ADR and architecture documentation
 
 ---
 
-## Current State
+## Documentation
 
-* config-driven layout system working
-* tools can be mounted and switched dynamically
-* multiple layouts already supported
-
-More details:
-
-```
-docs/v0_1/
-```
+- `docs/adrs`
+- `docs/v_2`
+- `docs/architecture-sketches`
 
 ---
 
-## Summary
+## Technical Notes
 
-A configurable UI system with dynamic tools.
+- Vanilla JavaScript
+- jQuery-based DOM handling
+- no frontend framework
+- configuration-driven UI composition
 
-Not page-based.
-Not fixed.
-Fully composable.
+---
+
+## Author
+
+Perseus Palma Jacobs
+
+Part of a long-term exploration into modular frontend architecture and maintainable
+software engineering.

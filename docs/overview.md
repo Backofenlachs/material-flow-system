@@ -1,58 +1,64 @@
-# Architecture Overview
-
-This folder contains the architectural documentation of the UI system.
-
----
-
-## Quick Idea (Speed Run)
-
-The system is **config-driven and runtime-composed**.
-
-* The layout is defined via a configuration (`ShellConfig`)
-* The `AppShell` renders this structure and exposes slots
-* The `AppManager` mounts tools into these slots
-* Tools can be swapped dynamically at runtime
-
-```text
-Config → AppShell → Slots → AppManager → Tools → UI
-```
-
-There is no fixed page structure — everything is composed dynamically.
-
----
+# Documentation Overview
 
 ## Structure
 
-### architecture-sketches/
-
-Early ideas, drafts, and experiments.
-
-* used to explore concepts
-* not necessarily consistent or complete
-
----
-
-### v0_1/
-
-First stable version of the architecture.
-
-* config-driven layout system implemented
-* runtime tool composition working
-* tool lifecycle (register, mount, switch) implemented
-
-Feature modules:
-
-* SearchTool
-* RiskTool
-
-This version represents the current baseline.
+```text
+docs/
+├── adrs/
+├── architecture-sketches/
+├── v0_1/
+└── v0_2/
+```
 
 ---
 
-## Summary
+## adrs/
 
-* config defines structure
-* tools define functionality
-* runtime composition builds the UI
+Architecture Decision Records
 
-Further versions will build on this.
+Contains:
+- architectural decisions
+- lifecycle decisions
+- layout system decisions
+- tool architecture decisions
+
+Importand ADRs:
+- ADR-0003 -> LayoutFactory
+- ADR-0004 -> Declarative mount configuration
+- ADR-0005 -> standardized lifecycle
+- ADR-0006 -> SimpleTool/CompositeTool structure
+
+---
+
+## architecture-sketches/
+
+Early architecture sketches and exploratory diagrams.
+
+Contains:
+- v0_1 sketches
+- v0_2 architecture exploration 
+- lifecycle integration sketches
+
+---
+
+## v0_1/
+
+Initial prototype architecture and early layout system.
+
+---
+
+## v0_2/
+
+Current architecture documentation.
+
+Contains:
+- architecture overview diagrams
+- layoutconfig composition diagrams
+- lifecycle standardization
+- MountingEngine architecture
+- CompositeTool structure
+
+Current development target:
+```
+    UI-Engine v0_2
+```
