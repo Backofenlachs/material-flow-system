@@ -5,7 +5,6 @@ export class MaterialListView {
             input: null,
             results: null
         };
-
     }
 
     render($root) {

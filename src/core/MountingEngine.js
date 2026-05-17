@@ -1,7 +1,7 @@
 /**
  * Mounting (Formerly AppManager)
  * 
- * Central coordinator for tool registration, mounting, unmountin a
+ * Central coordinator for tool registration, mounting, unmounting 
  * and switching within appshell slots.
  * 
  * Core responsibilities:
@@ -16,14 +16,16 @@ import { BaseTool } from "./BaseTool.js";
 export class MountingEngine {
     constructor() {
         this.appShell = null;
+        this.runtime = null;
 
         this.toolRegistry = null; // toolName => ToolClass; holds all tools and its definitons that exists in the app
         this.toolInstances = null; // toolName => Tool Instance; For persistence while multiple mounting
         this.mountedTools = null; // slot => toolName
     }
 
-    init(appShell) {
+    init(appShell, runtime) {
         this.appShell = appShell;
+        this.runtime = runtime;
 
         this.toolRegistry = new Map();
         this.toolInstances = new Map();
@@ -59,7 +61,8 @@ export class MountingEngine {
     }
 
     /**
-     * Mounts a registered tool into a slot and manages its runtime instance.
+     * - if noInstance, then Creates new Instance in this.toolInstances based on toolRegistry
+     * - mounts a registered tool into a slot.
      */
     mountTool(toolName, slotName, config=null) {
         const $slot = this.appShell.getSlot(slotName);
@@ -77,23 +80,23 @@ export class MountingEngine {
             );
         }
 
+        let toolInstance = null;
 
         // instaziate tool when no instance in toolInstances exists
         if (!this.toolInstances.get(toolName)) {
             const toolClass = this.toolRegistry.get(toolName);
+
             this.toolInstances.set(toolName, new toolClass());
-        } 
+            toolInstance = this.toolInstances.get(toolName);
 
-
-        const toolInstance =  this.toolInstances.get(toolName); 
-
-        if (typeof toolInstance.init === "function") {
-            toolInstance.init(config, { mountingEngine: this });
+            toolInstance.init(config, this.runtime);
+        } else {
+            toolInstance =  this.toolInstances.get(toolName); 
         }
-
+        
         if (typeof toolInstance.render === "function") {
             toolInstance.render($slot);
-        }
+        } else { throw new Error(`[MountingEngine.mountTool] render in toolInstance: ${toolInstance} not implementet`)}
 
         // add to mountedTool map
         this.mountedTools.set(slotName, toolName);
@@ -121,12 +124,6 @@ export class MountingEngine {
         this.toolInstances.delete(toolName);
     }
 
-    /**
-     * alle mounted tools unmounten
-     * alle tool instances zerstören
-     * alle runtime maps leeren
-     * runtime referenzen freigeben
-     */
     destroy() {
         // unmount all mounted tools
         for (const slotName of Array.from(this.mountedTools.keys())) {
@@ -140,7 +137,7 @@ export class MountingEngine {
 
         // cleanup all runtime maps
         this.mountedTools.clear();
-        this.toolInstances.clear();runtime
+        this.toolInstances.clear();
         this.toolRegistry.clear();
 
         this.toolRegistry = null;

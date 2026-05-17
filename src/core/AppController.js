@@ -5,16 +5,18 @@ import { AppShell } from "./AppShell.js";
 
 export class AppController {
     constructor() {
-        // runtime
         this.appShell = null
         this.mountingEngine = null;
         this.layoutConfig = null;
+        this.runtime = null;
 
         // states
         this.initialized = false;
     }
 
     init($rootElement , layoutConfig) {
+        this.isJqueryLoaded();
+
         // validating $rootElement as JQuery object
         if (!$rootElement || !$rootElement.jquery || $rootElement.length === 0) {
             throw new Error(
@@ -25,22 +27,24 @@ export class AppController {
         // checking layoutConfig is set properly
         this.validateLayoutConfig(layoutConfig);
         
-        // only one init per AppController posiible.
+        // only one init per AppController possible.
         if (this.initialized) {
             throw new Error(
                 "[AppController] Already initialized"
             );
         }
 
+        // INTANZIATE core components
         this.layoutConfig = layoutConfig;
-
-        // App Shell
-        this.appShell = new AppShell($rootElement);
-        this.appShell.init(this.layoutConfig.layout);
-
-        // mountingEngine gets slots from appShell
+        this.appShell = new AppShell();
         this.mountingEngine = new MountingEngine();
-        this.mountingEngine.init(this.appShell);        
+
+        // CREATE runtime environment
+        this.runtime = this.createRuntime();
+
+        // INITIALISE and connect core Componentns 
+        this.appShell.init($rootElement, this.layoutConfig.layout);
+        this.mountingEngine.init(this.appShell, this.runtime);        
         
         // register everytool tool from appShell.mounts in toolRegestry
         this.layoutConfig.mounts.forEach((tool) => {
@@ -87,6 +91,24 @@ export class AppController {
         if(!Array.isArray(layoutConfig.mounts)) {
             throw new Error(
                 "[AppController] layoutConfig.mounts must be an array"
+            );
+        }
+    }
+
+    createRuntime()
+    {
+        return {
+            mountingEngine: this.mountingEngine
+        };
+    }
+
+    isJqueryLoaded() {
+        if (
+            typeof window.jQuery !== "function" ||
+            !window.jQuery.fn
+        ) {
+            throw new Error(
+                "[AppController.init] Valid jQuery instance not found."
             );
         }
     }

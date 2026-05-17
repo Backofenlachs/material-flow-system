@@ -1,6 +1,16 @@
 import { RiskModel } from "../models/RiskModel.js";
 import { RiskView } from "../views/RiskView.js";
 
+/**
+ * RiskController
+ * 
+ * - orchestrates model / view
+ * - binds events
+ * - holds the $root
+ * - destroys it self
+ * 
+ * View holds its dom. and renders in SearchController.$root
+ */
 export class RiskController {
     constructor() {
         this.$root = null;

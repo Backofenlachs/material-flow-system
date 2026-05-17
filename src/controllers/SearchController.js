@@ -12,6 +12,7 @@ import { MaterialListView } from "../views/MaterialListView.js"
  * - orchestrates model / view
  * - binds events
  * - holds the $root
+ * - destroys itself
  * 
  * View holds its dom. and renders in SearchController.$root
  */
@@ -72,9 +73,5 @@ export class SearchController {
         this.view.dom.input?.off("input");
         
         this.view = null;
-
-
     }
-
-
 }

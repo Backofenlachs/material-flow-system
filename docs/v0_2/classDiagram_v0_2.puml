@@ -30,8 +30,7 @@ package "Core" {
     class AppShell {
         - dom.root : jQuery
         - dom.slots : Object
-        + constructor($rootElement)
-        + init(layoutConfig)
+        + init($rootAppElement, layoutConfig)
         + renderNode(nodeConfig) : string
         + cacheSlots()
         + getSlot(slotName)

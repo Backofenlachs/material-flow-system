@@ -20,12 +20,14 @@
 export class AppShell {
     constructor($rootElement) {
         this.dom = {
-            root: $rootElement,
+            root: null,
             slots: {}
         };
     }
 
-    init(layoutConfig) {
+    init($rootAppElement, layoutConfig) {
+        this.dom.root = $rootAppElement;
+
         const html = this.renderNode(layoutConfig);
         this.dom.root.html(html);
         this.cacheSlots();
@@ -38,7 +40,7 @@ export class AppShell {
      * Notes:
      * - Uses the layout configuration tree as input
      * - Supports nested child nodes
-     * - Adds slot metadata via the data-slot attribute when configured
+     * - Adds slot metadata via the 'data-slot' attribute when configured
      */
     renderNode(nodeConfig) {
         const {
@@ -64,20 +66,10 @@ export class AppShell {
             </${tag}>
         `;
     }
-    /*
-    generateSlot(slotName, tag = "div", cssClasses = [], domID = "") {
-        const classAttr = cssClasses.join(" ");
-        const idAttr = domID ? `id="${domID}"` : "";
 
-        return `
-            <${tag}
-                class="${classAttr}"
-                data-slot="${slotName}"
-                ${idAttr}
-            ></${tag}>
-        `;
-    }*/
-
+    /**
+     * caches htmlElements by 'data-slot'
+     */
     cacheSlots() {
         this.dom.root.find("[data-slot]").each((index, element) => {
             const $element = $(element);

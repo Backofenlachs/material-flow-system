@@ -1,26 +1,25 @@
 /**
  * Abstract base class for all mountable tools.
  * 
- * A Tool is a self-contained component that is mounted into a slot provided by the AppShell.
- * the Shell itself only provides layout slots, while the AppController/mount coordinator decides
- * which tool is mountet Into wich slot.
+ * A Tool is a self-contained UI module mounted into a slot provided by the AppShell.
  * 
- * In v0.1, a tool acts as a lightweight adapter between the slot container and the tools internal 
- * runtime (for example controller, model, view). This keeps the layout seperate from tOol-specefic
- * UI-logic.
+ * The AppController and MountingEngine coordinate which tools are mounted into wich
+ * slots.
  * 
- * Lifecycle:
- * constructor() -> init() -> render() -> destroy()
+ * BaseTool defines the standardized lifecycle:
  * 
+ * constructor() -> init(config, runtime) -> render($root) -> destroy()
+ *
+ * Concrete tools may:
+ * - implement lightweight UI logic directly
+ * - or act as adapters for internal MVC/controller structure
+ *  
  * Responsibilities:
- * - recieve a root container
- * - initialize internal tool logic
- * - render only inside the assigned root
- * - cleanup on unmount 
+ * - receive tool configuration and runtime references
+ * - render only inside the assigned root container
+ * - cleanup internal state and DOM bindings on destroy
  * 
  * @abstract
- * @param {jQuery} $rootElement - Root element where the tool will render its content
- * @param {Object} [config={}] - Optional configuration object for the tool
  */
 export class BaseTool {
 
@@ -42,30 +41,23 @@ export class BaseTool {
     }
 
     /**
-     * Initialize the tool runtime.
-     * Must be implemented by concrete tools.
-     *
-     * Typical responsibilities:
-     * - create internal controller / model / view instances
-     * - prepare local state
-     *
-     * @abstract
+     * Initialize the tool state and runtime references.
+     * 
+     * @param {Object} [config={}]
+     * @param {Object} [runtime={}]
      * @returns {void}
-     */
+    */
     init(config={}, runtime={}) {
         this.config = config;
         this.runtime = runtime;
 
         this.initialized = true;
-        
-        return this;
     }
 
     /**
-     * Render the tool UI into the assigned root element.
-     * Must be implemented by concrete tools.
+     * Render the tool inside the assigned root container.
      *
-     * @abstract
+     * @param {jQuery}
      * @returns {void}
      */
     render($root) {
@@ -81,10 +73,8 @@ export class BaseTool {
     }
 
     /**
-     * Cleanup hook for mounted tools.
-     * Concrete tools may override this to remove events,
-     * DOM bindings, or internal references before unmounting.
-     *
+     * Cleanup hook called before unmounting the tool.
+     * 
      * @returns {void}
      */
     destroy() {
@@ -95,5 +85,13 @@ export class BaseTool {
         this.$root = null;
         this.rendered = false;
         this.initialized = false;
+    }
+
+    getStatus() {
+        return {
+            initialized: this.initialized,
+            rendered: this.rendered,
+            hasRoot: !!this.$root
+        }
     }
 }
