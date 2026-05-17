@@ -1,0 +1,89 @@
+@startuml UI-Engine v0.2 - LayoutConfig Data Composition
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+top to bottom direction
+
+title UI-Engine v0.2 - LayoutConfig Data Composition v0.2
+
+package Configuration {
+
+class LayoutConfig <<config>> {
+    + layout : LayoutObject
+    + mounts : MountConfig[]
+}
+
+class LayoutObject <<structure>> {
+
+}
+
+class LayoutNode <<structure>> {
+    + tag : string
+    + classes : string[]
+    + children : Array<LayoutNode | LayoutSlot>
+}
+
+class LayoutSlot <<structure>> {
+    + tag : string
+    + slotName : SlotNames
+    + classes : string[]
+}
+
+class MountConfig <<config>> {
+    + slotName : SlotNames
+    + toolName : string
+    + toolClass : BaseTool
+    + config : object
+    + activeOnLoad : boolean
+}
+
+enum SlotNames {
+    HEADER: "header"
+    SIDEBAR: "sidebar"
+    CONTENT: "content"
+    FOOTER: "footer"
+
+    PRIMARY: "primary"
+    SECONDARY: "secondary"
+    TERTIARY: "tertiary"
+
+    LEFT: "left"
+    RIGHT: "right"
+    TOP: "top"
+    BOTTOM: "bottom"
+}
+
+
+note left of LayoutObject
+LayoutNode and LayoutSlot objects
+should be created through the helper functions:
+- node(...)
+- slot(...)
+from LayoutFactory.js
+end note
+
+}
+
+LayoutConfig *-down- LayoutObject : layout
+LayoutConfig *-down- "*" MountConfig : mounts
+
+LayoutObject *-- "*" LayoutNode : children
+LayoutObject *-- "*" LayoutSlot : children
+
+LayoutSlot ..> SlotNames : defines
+MountConfig ..> SlotNames : targets
+
+LayoutNode *-- "*" LayoutNode : children
+LayoutNode *-- "*" LayoutSlot : children
+
+
+note right of LayoutConfig
+Consumed by:
+- AppShell (layout rendering)
+- MountingEngine (tool mounting)
+end note
+
+
+LayoutObject -[hidden]right-> MountConfig
+
+
+@enduml
