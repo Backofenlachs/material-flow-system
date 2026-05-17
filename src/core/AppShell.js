@@ -47,21 +47,21 @@ export class AppShell {
             // node optionen
             tag = "div",
             slot = null,
-            id = "",
+            //id = "",
             style = [],
             classes = [],
             children = []
         } = nodeConfig;
 
         const classAttr = classes.length ? `class="${classes.join(" ")}"` : "";
-        const idAttr = id ? `id="${id}"` : null;
+        //const idAttr = id ? `id="${id}"` : null;
         const slotAttr = slot ? `data-slot="${slot}"` : "";
         const styleAttr = style ? `style="${style.join(";")}"`: "";
         
         const childrenHtml = children.map(child => this.renderNode(child)).join("");
 
         return `
-            <${tag} ${idAttr} ${classAttr} ${slotAttr} ${styleAttr}>
+            <${tag} ${classAttr} ${slotAttr} ${styleAttr}>
                 ${childrenHtml}
             </${tag}>
         `;

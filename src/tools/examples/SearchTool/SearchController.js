@@ -1,9 +1,9 @@
 // model
-import { mockData } from "../models/mockData.js";
-import { SearchModel } from "../models/SearchModel.js";
+import { mockData } from "./mockData.js";
+import { SearchModel } from "./SearchModel.js";
 
 // View
-import { MaterialListView } from "../views/MaterialListView.js"
+import { MaterialListView } from "./MaterialListView.js";
 
 /**
  * SearchController

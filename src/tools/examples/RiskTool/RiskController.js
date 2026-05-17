@@ -1,5 +1,5 @@
-import { RiskModel } from "../models/RiskModel.js";
-import { RiskView } from "../views/RiskView.js";
+import { RiskModel } from "./RiskModel.js";
+import { RiskView } from "./RiskView.js";
 
 /**
  * RiskController

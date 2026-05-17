@@ -1,5 +1,14 @@
 # ADR-0006:Define Simple and Composite Tool Structure
 
+## Status
+Acceptet
+
+Date: 2026-05-12
+
+Author: Perseus Palma Jacobs
+
+---
+
 ## Context
 During development of the UI-Library, serveral tool-related terms such as `SimpleTool`, `CompositeTool` (tool with internal MVC-based structure), and `ControlTool` (runtime-dependent tool) appeared in sketches, architecture diagrams, and discussions without being formally defined in a single place.
 

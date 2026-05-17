@@ -2,7 +2,7 @@
 import { AppController } from "./src/core/AppController.js";
 
 // configurationFiles
-import { sidebarLayout as layoutConfig} from "./src/core/ShellConfigs.js" ;
+import { layoutConfig } from "./src/exampleLayouts/SidebarLayout.js" ;
 
 $(document).ready(() => {
     const $app = $("#app");

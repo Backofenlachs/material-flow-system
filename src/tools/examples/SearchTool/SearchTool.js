@@ -2,8 +2,8 @@
  * SearchTool is an adapter between the AppShell and the mountingsystem
  */
 
-import { BaseTool } from "../../core/BaseTool.js";
-import { SearchController } from "../../controllers/SearchController.js";
+import { BaseTool } from "../../../core/BaseTool.js";
+import { SearchController } from "./SearchController.js";
 
 export class SearchTool extends BaseTool {
     constructor() {

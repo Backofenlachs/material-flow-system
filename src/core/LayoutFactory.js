@@ -69,19 +69,19 @@ export function node(tag="div", classes=[], children=[], style=null) {
     };
 }
 
-export function slot(tag="div", slotName, classes=[], children=[]) {
+export function slot(tag="div", slotName, classes=[]) {
     const context = "LayoutFactory.slot";
 
     validateNonEmptyString(tag, "slot", context);
     validateNonEmptyString(slotName, "slotName", context);
     validateStringArray(classes, "classes", context);
-    validateChildren(children, context);
+    //alidateChildren(children, context);
 
 
     return {
         tag: tag,
         slot: slotName,
         classes: classes,
-        children: children,
+        children: [],
     };
 }

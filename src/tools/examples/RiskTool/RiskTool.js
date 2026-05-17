@@ -20,8 +20,8 @@
  * CR-DSS Version 2.0
  */
 
-import { RiskController } from "../../controllers/RiskController.js";
-import { BaseTool } from "../../core/BaseTool.js";
+import { RiskController } from "./RiskController.js";
+import { BaseTool } from "../../../core/BaseTool.js";
 
 export class RiskTool extends BaseTool {
     constructor() {

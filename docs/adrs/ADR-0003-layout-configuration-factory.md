@@ -35,9 +35,10 @@ For an brief overwiev look ADR.0001-project-foundation.md
 - To address this problem, two helper functions are introduced in `LayoutFactory.js` as a first step towards a more formal contract for `ShellConfig`.
 ```JS 
     node(tag = "", classes = [], children = [])
-    slot(tag = "", slotName = "", classes = [], children = [])    
+    slot(tag = "", slotName = "", classes = [])    
 ```
 - These functions abstract the creation of default-nodes and slot-nodes.
+- `LayoutSlot` objects are terminal mount-points and therefore must not contain children.
 - This serves as an **initial step towards standardisation** and improved developer experience.
 
 ---

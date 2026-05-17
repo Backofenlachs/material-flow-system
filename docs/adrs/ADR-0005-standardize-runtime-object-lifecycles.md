@@ -1,7 +1,7 @@
 # ADR-005: Standardize Runtime Object Lifecycles
 
 ## Status
-proposed
+Acceptet
 
 Date: 2026-05-10
 
